@@ -35,3 +35,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("Dropdowns gevuld ✅");
 });
+
+// =====================
+// Berekening aansluiten
+// =====================
+
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("calcBtn");
+  const resultCard = document.getElementById("resultCard");
+  const resultValue = document.getElementById("resultValue");
+
+  if (!btn) {
+    console.error("Bereken-knop niet gevonden");
+    return;
+  }
+
+  btn.addEventListener("click", function () {
+    const price = Number(document.getElementById("priceInput").value || 0);
+    const age = Number(document.getElementById("ageInput").value || 0);
+
+    // tijdelijke simpele berekening (TEST)
+    const value = Math.round(price * Math.max(0.2, 1 - age * 0.1));
+
+    resultValue.textContent = "€ " + value.toLocaleString("nl-NL");
+    resultCard.hidden = false;
+
+    console.log("Berekening uitgevoerd:", value);
+  });
+});
