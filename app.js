@@ -1,31 +1,37 @@
 
-/* =====================================================
-   FSID APP.JS
-   Complete bootstrap + helpers
-   ===================================================== */
+// =====================
+// FSID app.js – basis
+// =====================
 
-/* =====================================================
-   1. APP BOOTSTRAP – __APP_READY__
-   ===================================================== */
+console.log("FSID app.js geladen");
 
-window.__APP_READY__ = (async function bootstrapApp() {
-  console.log("FSID bootstrap gestart…");
+// Wacht tot HTML klaar is
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM geladen, init start");
 
-  /* -----------------------------------------------
-     Installatie-check
-     ----------------------------------------------- */
-  try {
-    if (localStorage.getItem("fsid_install_activated") !== "1") {
-      console.warn("Bootstrap gestopt: installatie vereist");
-      return;
-    }
-  } catch (err) {
-    console.error("localStorage niet beschikbaar", err);
+  // Vul dropdowns
+  const typeSelect = document.getElementById("typeSelect");
+  const brandSelect = document.getElementById("brandSelect");
+  const stateSelect = document.getElementById("stateSelect");
+  const accuStateSelect = document.getElementById("accuStateSelect");
+
+  if (!typeSelect || !brandSelect || !stateSelect || !accuStateSelect) {
+    console.error("Selects niet gevonden – HTML klopt niet");
     return;
   }
 
-  /* -----------------------------------------------
-     Wacht tot DOM beschikbaar is
-     ----------------------------------------------- */
-  if (document.readyState === "loading") {
-    await new Promise(resolve =>
+  ["Stadsfiets", "E-bike", "MTB", "Race"].forEach(v =>
+    typeSelect.appendChild(new Option(v, v))
+  );
+  ["Gazelle", "Batavus", "Cortina", "Overig"].forEach(v =>
+    brandSelect.appendChild(new Option(v, v))
+  );
+  ["Uitstekend", "Goed", "Redelijk", "Matig"].forEach(v =>
+    stateSelect.appendChild(new Option(v, v))
+  );
+  ["Nieuw", "Goed", "Redelijk", "Matig", "Geen"].forEach(v =>
+    accuStateSelect.appendChild(new Option(v, v))
+  );
+
+  console.log("Dropdowns gevuld ✅");
+});
