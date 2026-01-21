@@ -1,0 +1,87 @@
+{
+  "types": [
+    {
+      "type": "Stadsfiets",
+      "ref_price": 1000,
+      "has_accu_default": false
+    },
+    {
+      "type": "E-bike",
+      "ref_price": 2500,
+      "has_accu_default": true
+    },
+    {
+      "type": "MTB",
+      "ref_price": 1200,
+      "has_accu_default": false
+    },
+    {
+      "type": "Race",
+      "ref_price": 1800,
+      "has_accu_default": false
+    }
+  ],
+  "cond_factors": {
+    "Uitstekend": 1.0,
+    "Goed": 0.85,
+    "Redelijk": 0.7,
+    "Matig": 0.55
+  },
+  "accu_state_factors": {
+    "Nieuw": 1.0,
+    "Goed": 0.9,
+    "Redelijk": 0.8,
+    "Matig": 0.6,
+    "Geen": 0.4
+  },
+  "brands": {
+    "Stadsfiets": {
+      "Gazelle": 1.05,
+      "Batavus": 1.0,
+      "Cortina": 0.95,
+      "Koga": 1.08,
+      "Overig": 0.9
+    },
+    "E-bike": {
+      "Gazelle": 1.06,
+      "Batavus": 1.02,
+      "Cortina": 0.96,
+      "Koga": 1.1,
+      "Overig": 0.92
+    },
+    "MTB": {
+      "Gazelle": 1.0,
+      "Batavus": 0.98,
+      "Cortina": 0.95,
+      "Koga": 1.05,
+      "Overig": 0.9
+    },
+    "Race": {
+      "Gazelle": 1.02,
+      "Batavus": 0.99,
+      "Cortina": 0.95,
+      "Koga": 1.08,
+      "Overig": 0.9
+    }
+  },
+  "restwaarde": {
+    "zonderaccu": [
+      1.0,
+      0.9,
+      0.82,
+      0.75,
+      0.68,
+      0.62,
+      0.56,
+      0.51,
+      0.46,
+      0.42,
+      0.38,
+      0.34,
+      0.31,
+      0.28,
+      0.25,
+      0.22
+    ]
+  }
+}
