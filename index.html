@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fiets Inruil Calculator</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<script>
+  const REG_KEY = "fsid_registration_v1";
+  const CODES_URL = "./codes.json";
+  async function ensureRegistration() {
+    const saved = localStorage.getItem(REG_KEY);
+    if (saved) return;
+    const res = await fetch(CODES_URL, { cache: "no-store" });
+    const { codes } = await res.json();
+    let input = prompt("Voer uw installatiecode in:");
+    while (!codes.includes(input)) {
+      input = prompt("Ongeldige installatiecode. Probeer opnieuw:");
+    }
+    localStorage.setItem(REG_KEY, input);
+  }
+  window.__APP_READY__ = ensureRegistration();
+</script>
+<h1>Fiets Inruil Calculator</h1>
+<script src="app.js"></script>
+</body>
+</html>
