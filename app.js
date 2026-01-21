@@ -64,17 +64,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// === DEBUG: bevestig klik & resultaat ===
-document.addEventListener("DOMContentLoaded", function () {
-  const btn = document.getElementById("calcBtn");
-  const resultCard = document.getElementById("resultCard");
+
+// ===============================
+// DEFINITIEVE TEST-BEREKENING
+// ===============================
+function fsidCalculate() {
+  console.log("fsidCalculate aangeroepen ✅");
+
+  const price = Number(document.getElementById("priceInput").value || 0);
+  const age = Number(document.getElementById("ageInput").value || 0);
+
+  if (!price) {
+    alert("Vul eerst een aankoopprijs in");
+    return;
+  }
+
+  const value = Math.round(price * Math.max(0.2, 1 - age * 0.1));
+
   const resultValue = document.getElementById("resultValue");
+  const resultCard = document.getElementById("resultCard");
 
-  if (!btn) return;
-
-  btn.onclick = function () {
-    resultValue.innerText = "€ 1234";
-    resultCard.hidden = false;
-    console.log("TEST-berekening uitgevoerd");
-  };
-});
+  resultValue.innerText = "€ " + value.toLocaleString("nl-NL");
+  resultCard.hidden = false;
+}
