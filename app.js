@@ -63,3 +63,18 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Berekening uitgevoerd:", value);
   });
 });
+
+// === DEBUG: bevestig klik & resultaat ===
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("calcBtn");
+  const resultCard = document.getElementById("resultCard");
+  const resultValue = document.getElementById("resultValue");
+
+  if (!btn) return;
+
+  btn.onclick = function () {
+    resultValue.innerText = "€ 1234";
+    resultCard.hidden = false;
+    console.log("TEST-berekening uitgevoerd");
+  };
+});
