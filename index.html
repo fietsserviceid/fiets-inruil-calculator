@@ -159,3 +159,121 @@
   let activated = false;
   let meta = null;
   try {
+
+  } catch (e) {
+    activated = false;
+    meta = null;
+  }
+
+  // ===== Niet geldig geactiveerd? Toon installatiescherm
+  if (!activated || !meta || !meta.dealer || !meta.code) {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(META_KEY);
+    } catch (e) {}
+
+    document.body.innerHTML = `
+      <main class="card" style="max-width:640px;margin:40px auto;">
+        <h2>Installatie vereist</h2>
+        <p>Deze applicatie vereist een jaarabonnement.</p>
+
+        <label>Dealernaam
+          <input id="dealer">
+        </label>
+
+        <label>Installatiecode
+          <input id="code">
+        </label>
+
+        <label>
+          <input type="checkbox" id="agree"> Ik ga akkoord met het jaarabonnement
+        </label>
+
+        <button id="activateBtn">Activeer</button>
+      </main>
+    `;
+
+    document.getElementById("activateBtn").addEventListener("click", function () {
+      const dealer = document.getElementById("dealer").value.trim();
+      const code   = document.getElementById("code").value.trim().toUpperCase();
+      const agree  = document.getElementById("agree").checked;
+
+      if (!dealer || !agree || INSTALL_CODES.indexOf(code) === -1) {
+        alert("Vul alles correct in");
+        return;
+      }
+
+      localStorage.setItem(STORAGE_KEY, "1");
+      localStorage.setItem(
+        META_KEY,
+        JSON.stringify({ dealer: dealer, code: code })
+      );
+
+      location.reload();
+    });
+
+    return; // ✅ correct: binnen IIFE
+  }
+
+})(); /* ← HEEL BELANGRIJK: sluit de IIFE */
+</script>
+
+<header>
+  <h1>Inruilwaarde‑calculator</h1>
+</header>
+
+<main>
+  <div class="card">
+    <h2>Gegevens fiets</h2>
+
+    <label>Nieuwprijs (€)
+      <input type="number" id="price" value="2000">
+    </label>
+
+    <label>Leeftijd (jaren)
+      <input type="number" id="age" value="5">
+    </label>
+
+    <label>Conditie
+      <select id="condition">
+        <option value="1">Uitstekend</option>
+        <option value="0.7">Goed</option>
+        <option value="0.5">Redelijk</option>
+        <option value="0.3">Matig</option>
+      </select>
+    </label>
+
+    <button onclick="calculate()">Bereken inruilwaarde</button>
+    <div class="result" id="result">€ 0</div>
+  </div>
+</main>
+
+<footer>
+  © 2026 Inruilwaarde Fietsen – <span id="dealerFooter"></span>
+</footer>
+
+<script>
+function calculate() {
+  var price = Number(document.getElementById("price").value);
+  var age = Number(document.getElementById("age").value);
+  var condition = Number(document.getElementById("condition").value);
+
+  var ageFactor = Math.max(0.1, 1 - (age * 0.12));
+  var value = price * ageFactor * condition;
+
+  document.getElementById("result").innerText = "€ " + Math.round(value);
+}
+
+// Dealernaam in footer
+(function () {
+  try {
+    var meta = JSON.parse(localStorage.getItem("fsid_install_meta") || "null");
+    if (meta && meta.dealer) {
+      document.getElementById("dealerFooter").textContent = "Dealer: " + meta.dealer;
+    }
+  } catch (e) {}
+})();
+</script>
+
+</body>
+</html>
