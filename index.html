@@ -4,202 +4,175 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inruilwaarde Fietsen</title>
-
-  <!-- PWA -->
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#0078D7">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="./styles.css">
-</head>
-
-<body>
-
-<!-- =====================================================
-     FSID INSTALLATIE / ABONNEMENT GATE (GEFIXT)
-     ===================================================== -->
-<script>
-const STORAGE_KEY = "fsid_install_activated";
-const META_KEY = "fsid_install_meta";
-
-/* ✅ VERVANG / LAAT JE VOLLEDIGE LIJST HIER STAAN */
-const INSTALL_CODES = [
-  "FSID-26KV-4UWN-E9MV",
-  "FSID-279Y-BKN3-S4WD",
-  "FSID-2C7K-BZTH-2JFY",
-  "FSID-ZY9J-WJR4-RWAD"
-];
-
-if (localStorage.getItem(STORAGE_KEY) !== "1") {
-
-  document.documentElement.innerHTML = `
-<!doctype html>
-<html lang="nl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Installatie vereist</title>
+  <title>Fiets Inruil Calculator</title>
 
   <style>
     body {
-      font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
-      padding: 24px;
-      max-width: 640px;
-      margin: auto;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
       background: #f5f7fa;
+      color: #222;
+    }
+    header, footer {
+      background: #fff;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    footer {
+      border-top: 1px solid #ddd;
+      border-bottom: none;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+    main {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 16px;
     }
     .card {
-      background: white;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.08);
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      background: #0078D7;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 12px 18px;
-      margin-top: 12px;
-      font-size: 16px;
-      cursor: pointer;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.06);
     }
     label {
       display: block;
       margin-top: 12px;
     }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-size: 16px;
+    }
+    button {
+      background: #0078D7;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    .result {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
 <body>
-<div class="card">
-  <h2>Installatiecode vereist</h2>
-
-  <p>
-    Deze applicatie is uitsluitend beschikbaar met
-    een <strong>jaarabonnement</strong>.
-  </p>
-
-  <button onclick="requestCode()">Vraag installatiecode aan</button>
-
-  <hr>
-
-  <input id="dealerName" placeholder="Naam dealer / bedrijf *">
-  <input id="installCode" placeholder="Installatiecode">
-
-  <label>
-    <input type="checkbox" id="agree">
-    Ik ga akkoord met het jaarabonnement
-  </label>
-
-  <button onclick="activate()">Activeer applicatie</button>
-</div>
 
 <script>
-function requestCode() {
-  const subject = "Aanvraag jaarabonnement – Inruilwaarde‑calculator";
-  const body =
-\`Bedrijfsnaam:
-Adres:
-Postcode / Plaats:
-KvK:
-BTW:
-Contactpersoon:
-E-mail:
-Aantal installaties:\`;
+/* ================= INSTALLATIE GATE ================= */
 
-  location.href =
-    "mailto:info@fietsserviceid.nl" +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
-}
+var STORAGE_KEY = "fsid_install_activated";
 
-function activate() {
-  const dealer = document.getElementById("dealerName").value.trim();
-  const code = document.getElementById("installCode").value.trim().toUpperCase();
-  const agree = document.getElementById("agree").checked;
+var INSTALL_CODES = [
+  "FSID-26KV-4UWN-E9MV",
+  "FSID-279Y-BKN3-S4WD",
+  "FSID-2C7K-BZTH-2JFY",
+  "FSID-2C8R-SC9T-3XC6",
+  "FSID-2HPR-5KB4-HGE4",
+  "FSID-2JV9-T6W3-6S7V",
+  "FSID-ZWAM-BJ5W-BCMF",
+  "FSID-ZY9J-WJR4-RWAD"
+];
 
-  if (!dealer) {
-    alert("Dealernaam is verplicht");
-    return;
-  }
-  if (!agree) {
-    alert("Akkoord met het jaarabonnement is verplicht");
-    return;
-  }
-  if (!INSTALL_CODES.includes(code)) {
-    alert("Ongeldige installatiecode");
-    return;
-  }
+if (localStorage.getItem(STORAGE_KEY) !== "1") {
+  document.body.innerHTML = `
+    <main class="card">
+      <h2>Installatie vereist</h2>
+      <p>Deze applicatie vereist een jaarabonnement.</p>
 
-  localStorage.setItem("${STORAGE_KEY}", "1");
-  localStorage.setItem("${META_KEY}", JSON.stringify({
-    dealer: dealer,
-    code: code,
-    activatedAt: new Date().toISOString()
-  }));
+      <label>Dealernaam
+        <input id="dealer">
+      </label>
 
-  location.reload();
-}
-</script>
+      <label>Installatiecode
+        <input id="code">
+      </label>
 
-</body>
-</html>
+      <label>
+        <input type="checkbox" id="agree"> Ik ga akkoord met het jaarabonnement
+      </label>
+
+      <button onclick="activate()">Activeer</button>
+    </main>
   `;
 
-  // ✅ hier netjes stoppen
-  return;
-}
+  window.activate = function () {
+    var dealer = document.getElementById("dealer").value.trim();
+    var code = document.getElementById("code").value.trim().toUpperCase();
+    var agree = document.getElementById("agree").checked;
+
+    if (!dealer || !agree || INSTALL_CODES.indexOf(code) === -1) {
+      alert("Vul alles correct in");
+      return;
+    }
+
+    localStorage.setItem(STORAGE_KEY, "1");
+    location.reload();
+  };
+
+} 
 </script>
 
-<!-- =====================================================
-     NORMALE APP (NA ACTIVATIE)
-     ===================================================== -->
-
 <header>
-  <img
-    src="logofietsserviceidtransparant-ezgif.com-resize.png"
-    alt="Fiets Service ID"
-    style="height:50px; width:auto; margin-right:12px; object-fit:contain;"
-  >
   <h1>Inruilwaarde‑calculator</h1>
-  <button id="installBtn" hidden>Installeer app</button>
 </header>
 
 <main>
-  <!-- ✅ jouw bestaande app-inhoud blijft hier -->
+
+  <div class="card">
+    <h2>Gegevens fiets</h2>
+
+    <label>Nieuwprijs (€)
+      <input type="number" id="price" value="2000">
+    </label>
+
+    <label>Leeftijd (jaren)
+      <input type="number" id="age" value="5">
+    </label>
+
+    <label>Conditie
+      <select id="condition">
+        <option value="1">Uitstekend</option>
+        <option value="0.7">Goed</option>
+        <option value="0.5">Redelijk</option>
+        <option value="0.3">Matig</option>
+      </select>
+    </label>
+
+    <button onclick="calculate()">Bereken inruilwaarde</button>
+
+    <div class="result" id="result">€ 0</div>
+  </div>
+
 </main>
 
 <footer>
-  <small>
-    © <span id="year"></span> Inruilwaarde Fietsen By FsiD BV
-  </small><br>
-  <small style="font-size: 11px; color: #666;">
-    Disclaimer: Fiets Service ID is niet aansprakelijk voor de weergegeven inruilprijs.
-    Alle waarden zijn indicatief. De uiteindelijke inruilprijs wordt bepaald door de dealer.
-  </small>
+  © 2026 Inruilwaarde Fietsen – indicatief
 </footer>
 
-<!-- App logic -->
-<script src="./app.js"></script>
-
-<!-- Service worker -->
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+function calculate() {
+  var price = Number(document.getElementById("price").value);
+  var age = Number(document.getElementById("age").value);
+  var condition = Number(document.getElementById("condition").value);
 
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js");
-    });
-  }
+  var ageFactor = Math.max(0.1, 1 - (age * 0.12));
+  var value = price * ageFactor * condition;
+
+  document.getElementById("result").innerText =
+    "€ " + Math.round(value);
+}
 </script>
 
 </body>
 </html>
+``
