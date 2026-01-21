@@ -2,12 +2,15 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inruilwaarde Fietsen</title>
 
+  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#0078D7">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="./styles.css">
 </head>
 
@@ -20,12 +23,12 @@
 const STORAGE_KEY = "fsid_install_activated";
 const META_KEY = "fsid_install_meta";
 
-/* ✅ JOUW INSTALLATIECODES */
+/* ✅ VERVANG / LAAT JE VOLLEDIGE LIJST HIER STAAN */
 const INSTALL_CODES = [
-  "FSID-26KV-4UWN-E9MV","FSID-279Y-BKN3-S4WD","FSID-2C7K-BZTH-2JFY",
-  "FSID-2C8R-SC9T-3XC6","FSID-2HPR-5KB4-HGE4","FSID-2JV9-T6W3-6S7V",
-  "FSID-ZWAM-BJ5W-BCMF","FSID-ZY9J-WJR4-RWAD"
-  /* ← je volledige lijst kan hier blijven staan */
+  "FSID-26KV-4UWN-E9MV",
+  "FSID-279Y-BKN3-S4WD",
+  "FSID-2C7K-BZTH-2JFY",
+  "FSID-ZY9J-WJR4-RWAD"
 ];
 
 if (localStorage.getItem(STORAGE_KEY) !== "1") {
@@ -34,45 +37,45 @@ if (localStorage.getItem(STORAGE_KEY) !== "1") {
 <!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installatie vereist</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installatie vereist</title>
 
-<style>
-body {
-  font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
-  padding: 24px;
-  max-width: 640px;
-  margin: auto;
-  background: #f5f7fa;
-}
-.card {
-  background: white;
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
-}
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 16px;
-}
-button {
-  background: #0078D7;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 18px;
-  margin-top: 12px;
-  font-size: 16px;
-  cursor: pointer;
-}
-label {
-  display: block;
-  margin-top: 12px;
-}
-</style>
+  <style>
+    body {
+      font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      padding: 24px;
+      max-width: 640px;
+      margin: auto;
+      background: #f5f7fa;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #0078D7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 18px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+    }
+  </style>
 </head>
 
 <body>
@@ -80,8 +83,8 @@ label {
   <h2>Installatiecode vereist</h2>
 
   <p>
-    De Inruilwaarde‑calculator van Fiets Service ID is uitsluitend
-    beschikbaar met een <strong>jaarabonnement</strong>.
+    Deze applicatie is uitsluitend beschikbaar met
+    een <strong>jaarabonnement</strong>.
   </p>
 
   <button onclick="requestCode()">Vraag installatiecode aan</button>
@@ -128,7 +131,7 @@ function activate() {
     return;
   }
   if (!agree) {
-    alert("U dient akkoord te gaan met het jaarabonnement");
+    alert("Akkoord met het jaarabonnement is verplicht");
     return;
   }
   if (!INSTALL_CODES.includes(code)) {
@@ -146,45 +149,56 @@ function activate() {
   location.reload();
 }
 </script>
+
 </body>
 </html>
   `;
 
-  /* ✅ NETJES STOPPEN – GEEN ERRORS */
+  // ✅ hier netjes stoppen
+  return;
 }
 </script>
 
 <!-- =====================================================
-     NORMALE APP (WORDT PAS GELADEN NA ACTIVATIE)
+     NORMALE APP (NA ACTIVATIE)
      ===================================================== -->
 
 <header>
-  <img src="logofietsserviceidtransparant-ezgif.com-resize.png"
-       alt="Fiets Service ID"
-       style="height:50px; width:auto; margin-right:12px;">
+  <img
+    src="logofietsserviceidtransparant-ezgif.com-resize.png"
+    alt="Fiets Service ID"
+    style="height:50px; width:auto; margin-right:12px; object-fit:contain;"
+  >
   <h1>Inruilwaarde‑calculator</h1>
   <button id="installBtn" hidden>Installeer app</button>
 </header>
 
 <main>
-  <!-- ✅ jouw originele app-inhoud blijft hier -->
+  <!-- ✅ jouw bestaande app-inhoud blijft hier -->
 </main>
 
 <footer>
-  <small>© <span id="year"></span> Inruilwaarde Fietsen By FsiD BV</small><br>
+  <small>
+    © <span id="year"></span> Inruilwaarde Fietsen By FsiD BV
+  </small><br>
   <small style="font-size: 11px; color: #666;">
     Disclaimer: Fiets Service ID is niet aansprakelijk voor de weergegeven inruilprijs.
-    Alle waarden zijn indicatief. De uiteindelijke prijs wordt bepaald door de dealer.
+    Alle waarden zijn indicatief. De uiteindelijke inruilprijs wordt bepaald door de dealer.
   </small>
 </footer>
 
+<!-- App logic -->
 <script src="./app.js"></script>
-<script>
-document.getElementById("year").innerText = new Date().getFullYear();
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
-}
+<!-- Service worker -->
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js");
+    });
+  }
 </script>
 
 </body>
