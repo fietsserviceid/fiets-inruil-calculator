@@ -57,3 +57,88 @@ background:#0078D7;color:#fff;border:none;border-radius:6px}
 <div class="card">
 <h2>Installatiecode vereist</h2>
 
+<p>Deze applicatie is uitsluitend beschikbaar met een <b>jaarabonnement</b>.</p>
+
+<button onclick="requestCode()">Vraag installatiecode aan</button>
+<hr>
+
+<input id="dealerNameInput" placeholder="Naam dealer / bedrijf *">
+<input id="codeInput" placeholder="Voer installatiecode in">
+
+<label>
+<input type="checkbox" id="agreeCheckbox">
+Ik ga akkoord met het jaarabonnement
+</label>
+
+<button onclick="activateApp()">Activeer applicatie</button>
+</div>
+
+<script>
+function requestCode(){
+  location.href =
+  "mailto:info@fietsserviceid.nl?subject=" +
+  encodeURIComponent("Aanvraag jaarabonnement Inruilwaarde‑calculator") +
+  "&body=" + encodeURIComponent(
+\`Bedrijfsnaam:
+Adres:
+Postcode / Plaats:
+KvK:
+BTW:
+Contactpersoon:
+E-mail:
+Aantal installaties:\`
+);}
+function activateApp(){
+  const dealer=document.getElementById("dealerNameInput").value.trim();
+  const code=document.getElementById("codeInput").value.toUpperCase().trim();
+  const agree=document.getElementById("agreeCheckbox").checked;
+
+  if(!dealer) return alert("Dealernaam verplicht");
+  if(!agree) return alert("Akkoord vereist");
+  if(!INSTALL_CODES.includes(code)) return alert("Ongeldige code");
+
+  localStorage.setItem("${STORAGE_KEY}","1");
+  localStorage.setItem("${META_KEY}",JSON.stringify({
+    dealer:dealer,code:code,activatedAt:new Date().toISOString()
+  }));
+  location.reload();
+}
+</script>
+</body>
+</html>`;
+    throw new Error("Installatie vereist");
+  }
+} catch(e){}
+</script>
+
+<!-- =====================================================
+     JOUW ORIGINELE APP (ONGEWIJZIGD)
+     ===================================================== -->
+
+<header>
+ ruilwaarde-calculator</h1>
+  <button id="installBtn" hidden>Installeer app</button>
+</header>
+
+<main>
+  <!-- ✅ jouw volledige bestaande content -->
+</main>
+
+<footer>
+  <small>© <span id="year"></span> Inruilwaarde Fietsen By FsiD BV</small><br>
+  <small style="font-size: 11px; color: #666;">
+    Disclaimer: Fiets Service ID is niet aansprakelijk voor de weergegeven inruilprijs.
+    Alle waarden zijn indicatief.
+  </small>
+</footer>
+
+./app.js</script>
+<script>
+document.getElementById("year").innerText = new Date().getFullYear();
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
+
+</body>
+</html>
