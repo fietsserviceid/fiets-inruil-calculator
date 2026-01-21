@@ -1,13 +1,25 @@
 
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inruilwaarde Fietsen</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0078D7">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     FSID INSTALLATIE / ABONNEMENT GATE
+     ===================================================== -->
 <script>
-/* =====================================================
-   FSID INSTALLATIE / ABONNEMENT GATE
-   ===================================================== */
-
 const STORAGE_KEY = "fsid_install_activated";
-const META_KEY    = "fsid_install_meta";
+const META_KEY = "fsid_install_meta";
 
-/* ✅ VOLLEDIGE SET – 250 INSTALLATIECODES */
+/* ✅ INSTALLATIECODES (volledige set) */
 const INSTALL_CODES = [
   "FSID-26KV-4UWN-E9MV","FSID-279Y-BKN3-S4WD","FSID-2C7K-BZTH-2JFY",
   "FSID-2C8R-SC9T-3XC6","FSID-2HPR-5KB4-HGE4","FSID-2JV9-T6W3-6S7V",
@@ -16,3 +28,32 @@ const INSTALL_CODES = [
   "FSID-34QH-C93Z-QHS5","FSID-37MH-5CW2-CJEH","FSID-3H9W-T2GS-MQZD",
   "FSID-3J9R-SQTA-E48B","FSID-3REX-PWF3-PXGT","FSID-3T2E-F5XB-5W8P",
   "FSID-48J7-7ZWA-WP9S","FSID-4A3H-3M97-H6SU",
+  "FSID-53XE-VRPC-2GMX","FSID-57TC-EHJR-VK4B","FSID-5ASB-K5TN-MQW3",
+  "FSID-5JZR-BHKQ-Z8F9","FSID-5N7T-CASV-UABS","FSID-5RPJ-TM6H-SKVD",
+  "FSID-5TDN-C6AN-YW3J","FSID-5W4H-6YAV-CFU7","FSID-5Z36-DPXV-JXFD",
+  "FSID-5ZTF-ZSWP-9FJR","FSID-ZWAM-BJ5W-BCMF","FSID-ZY9J-WJR4-RWAD"
+];
+
+try {
+  if (localStorage.getItem(STORAGE_KEY) === "1") {
+    // ✅ al geactiveerd
+  } else {
+    document.documentElement.innerHTML = `
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installatie vereist</title>
+<style>
+body{font-family:system-ui;padding:24px;max-width:640px;margin:auto}
+.card{border:1px solid #ddd;border-radius:12px;padding:24px}
+input{width:100%;padding:10px;font-size:16px;margin-top:10px}
+button{margin-top:12px;padding:12px 18px;
+background:#0078D7;color:#fff;border:none;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>Installatiecode vereist</h2>
+
