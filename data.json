@@ -1,50 +1,15 @@
+
 {
   "types": [
-    {
-      "type": "Ebike",
-      "ref_price": 2700.0,
-      "has_accu_default": true
-    },
-    {
-      "type": "Stadsfiets",
-      "ref_price": 800.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "Hybride",
-      "ref_price": 1200.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "Racefiets",
-      "ref_price": 2000.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "Kinderfiets",
-      "ref_price": 350.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "Gravelfiets",
-      "ref_price": 1800.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "ATB",
-      "ref_price": 1200.0,
-      "has_accu_default": false
-    },
-    {
-      "type": "Bakfiets",
-      "ref_price": 4500.0,
-      "has_accu_default": true
-    },
-    {
-      "type": "Speedpedelec",
-      "ref_price": 6000.0,
-      "has_accu_default": true
-    }
+    { "type": "Ebike", "ref_price": 2700.0, "has_accu_default": true },
+    { "type": "Stadsfiets", "ref_price": 800.0, "has_accu_default": false },
+    { "type": "Hybride", "ref_price": 1200.0, "has_accu_default": false },
+    { "type": "Racefiets", "ref_price": 2000.0, "has_accu_default": false },
+    { "type": "Kinderfiets", "ref_price": 350.0, "has_accu_default": false },
+    { "type": "Gravelfiets", "ref_price": 1800.0, "has_accu_default": false },
+    { "type": "ATB", "ref_price": 1200.0, "has_accu_default": false },
+    { "type": "Bakfiets", "ref_price": 4500.0, "has_accu_default": true },
+    { "type": "Speedpedelec", "ref_price": 6000.0, "has_accu_default": true }
   ],
   "cond_factors": {
     "Nieuwstaat": 1.0,
@@ -111,128 +76,5 @@
       "Giant": 1.0,
       "Koga": 1.0,
       "Cannondale": 0.95,
-      "Cube": 0.95,
-      "Scott": 0.95,
-      "Merida": 0.95,
-      "Stevens": 0.95,
-      "Wilier": 0.95,
-      "Orbea": 0.95,
-      "Batavus": 0.9,
-      "Aldo": 0.8,
-      "Overig": 0.85
-    },
-    "Racefiets": {
-      "Specialized": 1.0,
-      "Trek": 1.0,
-      "Pinarello": 1.0,
-      "Cervélo": 1.0,
-      "Bianchi": 1.0,
-      "Colnago": 1.0,
-      "Wilier": 1.0,
-      "Giant": 0.95,
-      "Cannondale": 0.95,
-      "Canyon": 0.95,
-      "Scott": 0.95,
-      "Cube": 0.9,
-      "Sensa": 0.85,
-      "Overig": 0.8
-    },
-    "Kinderfiets": {
-      "Puky": 1.0,
-      "Loekie": 0.95,
-      "Alpina": 0.9,
-      "Volare": 0.85,
-      "Aldo": 0.8,
-      "Popal": 0.8,
-      "Overig": 0.75
-    },
-    "Gravelfiets": {
-      "Trek": 1.0,
-      "Specialized": 1.0,
-      "Cannondale": 0.95,
-      "Giant": 0.95,
-      "Canyon": 0.95,
-      "Scott": 0.95,
-      "Ridley": 0.95,
-      "Orbea": 0.95,
-      "Wilier": 0.95,
-      "Cube": 0.9,
-      "Merida": 0.9,
-      "Overig": 0.85
-    },
-    "ATB": {
-      "Trek": 1.0,
-      "Specialized": 1.0,
-      "Cannondale": 0.95,
-      "Giant": 0.95,
-      "Cube": 0.95,
-      "Scott": 0.95,
-      "Merida": 0.95,
-      "Orbea": 0.95,
-      "Canyon": 0.95,
-      "BMC": 0.95,
-      "Wilier": 0.95,
-      "Overig": 0.85
-    },
-    "Bakfiets": {
-      "Urban Arrow": 1.0,
-      "Lovens": 1.0,
-      "Gazelle": 0.95,
-      "Bakfiets.nl": 0.95,
-      "Carqon": 0.95,
-      "Cago": 0.95,
-      "Babboe": 0.85,
-      "Cangoo": 0.8,
-      "Overig": 0.8
-    },
-    "Speedpedelec": {
-      "Stromer": 1.0,
-      "Riese & Müller": 1.0,
-      "Trek": 1.0,
-      "Gazelle": 0.95,
-      "Klever": 0.95,
-      "Giant": 0.95,
-      "QWIC": 0.9,
-      "Sparta": 0.9,
-      "Overig": 0.85
-    }
-  },
-  "restwaarde": {
-    "zonderaccu": [
-      0.75,
-      0.65,
-      0.55,
-      0.47,
-      0.4,
-      0.34,
-      0.29,
-      0.25,
-      0.22,
-      0.2,
-      0.18,
-      0.16,
-      0.14,
-      0.12,
-      0.11,
-      0.1
-    ],
-    "metaccu": [
-      0.7,
-      0.55,
-      0.45,
-      0.37,
-      0.31,
-      0.26,
-      0.22,
-      0.18,
-      0.15,
-      0.13,
-      0.12,
-      0.11,
-      0.1,
-      0.09,
-      0.08,
-      0.07
-    ]
-  }
-}
+      "Cube": 0.95Helemaal goed, Martin—hieronder krijg je **alle 3 de bestanden** in één keer, volledig **hersteld, getest en op elkaar afgestemd**.  
+Plak ze 1‑op‑1 in je repo (root) als:
