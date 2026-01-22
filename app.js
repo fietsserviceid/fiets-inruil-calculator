@@ -1,278 +1,254 @@
 
-/* =====================================================
-   FSID – APP.JS (definitief)
-   - Laadt data.json
-   - Vult UI dropdowns
-   - Berekent inruilwaarde (originele formule)
-   - Vult offerte & footer (dealer)
-   - Werkt samen met installatie-gate
-   ===================================================== */
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inruilwaarde Fietsen</title>
 
-'use strict';
+  <!-- PWA + Styles -->
+  ./manifest.webmanifest
+  <meta name="theme-color" content="#0078D7" />
+  ./styles.css
 
-let APPDATA = null;
-const fmt = new Intl.NumberFormat('nl-NL', {
-  style: 'currency',
-  currency: 'EUR',
-  maximumFractionDigits: 0
-});
+  <!-- Installatiecodes (moet vóór de gate staan) -->
+  ./codes.js</script>
+</head>
+<body>
 
-// Kleine helper
-const $ = (id) => document.getElementById(id);
+<!-- ===================================================
+     INSTALLATIE-GATE (verplicht vóór alles)
+=================================================== -->
+<script>
+(function () {
+  const STORAGE_KEY = "fsid_install_activated";
+  const META_KEY    = "fsid_install_meta";
 
-/* -----------------------------------------------------
-   1) Start: laad data.json en initialiseer UI
-   ----------------------------------------------------- */
-async function load() {
-  try {
-    // Laad data.json (no-cache om verouderde SW-caches te vermijden)
-    const res = await fetch('./data.json', { cache: 'no-cache' });
-    if (!res.ok) throw new Error(`data.json niet gevonden (${res.status})`);
-    APPDATA = await res.json();
+  let meta = null;
+  try { meta = JSON.parse(localStorage.getItem(META_KEY) || "null"); } catch {}
 
-    initUI();
-    injectDealerFromLocalStorage();
-  } catch (err) {
-    console.error('Kon data.json niet laden:', err);
-    const hint = $('refPriceHint');
-    if (hint) {
-      hint.textContent = 'Kon data niet laden. Vernieuw de pagina of controleer data.json.';
+  // Gate: blokkeer app als niet geactiveerd
+  if (!meta || !meta.dealer || localStorage.getItem(STORAGE_KEY) !== "1") {
+    document.body.innerHTML = `
+      <main class="card" style="max-width:640px;margin:40px auto;">
+        <h2>Installatie vereist</h2>
+        <p>Deze applicatie vereist een jaarabonnement.</p>
+
+        <label>Dealernaam
+          <input id="dealer" />
+        </label>
+
+        <label>Installatiecode
+          <input id="code" />
+        </label>
+
+        <label class="inline">
+          <input type="checkbox" id="agree" /> Ik ga akkoord met het jaarabonnement
+        </label>
+
+        <button id="activateBtn" class="primary">Activeer</button>
+
+        <hr />
+        <p>Nog geen installatiecode?</p>
+        <a id="requestLink" class="secondary">Installatiecode aanvragen</a>
+      </main>
+    `;
+
+    const dealerInput = document.getElementById("dealer");
+    const req = document.getElementById("requestLink");
+
+    function updateMail() {
+      const d = encodeURIComponent(dealerInput.value || "");
+      req.href =
+        "mailto:info@fietsserviceid.nl" +
+        "?subject=" + encodeURIComponent("Aanvraag installatiecode Fiets Inruil Calculator") +
+        "&body=" + encodeURIComponent(
+          "Bedrijfsnaam: " + d + "\nContactpersoon:\nAdres:\nPostcode / Plaats:\nE-mail:\nTelefoon:\nKvK-nummer:\n\nGraag ontvangen wij een installatiecode."
+        );
     }
+    dealerInput.addEventListener("input", updateMail);
+    updateMail();
+
+    document.getElementById("activateBtn").onclick = function () {
+      const dealer = dealerInput.value.trim();
+      const code   = document.getElementById("code").value.trim().toUpperCase();
+      const agree  = document.getElementById("agree").checked;
+
+      if (!dealer || !agree || !Array.isArray(INSTALL_CODES) || !INSTALL_CODES.includes(code)) {
+        alert("Vul alle velden correct in.");
+        return;
+      }
+
+      localStorage.setItem(META_KEY, JSON.stringify({ dealer, code, activatedAt: new Date().toISOString() }));
+      localStorage.setItem(STORAGE_KEY, "1");
+      location.reload();
+    };
+
+    // Stop render
+    return;
   }
-}
+})();
+</script>
 
-/* -----------------------------------------------------
-   2) UI initialisatie
-   ----------------------------------------------------- */
-function initUI() {
-  if (!APPDATA) return;
+<!-- ===================================================
+     CALCULATOR UI
+=================================================== -->
+<header class="app-header">
+  ./logofietsserviceidtransparant-ezgif.com-resize.png
+  <h1>Inruilwaarde‑calculator</h1>
+  <button id="installBtn" hidden type="button">Installeer app</button>
+</header>
 
-  // Type
-  const typeSel = $('typeSelect');
-  if (typeSel) {
-    typeSel.innerHTML = '';
-    APPDATA.types.forEach(t => {
-      const opt = document.createElement('option');
-      opt.value = t.type;
-      opt.textContent = t.type;
-      typeSel.appendChild(opt);
-    });
-  }
+<main>
+  <section class="card">
+    <h2>Invoer</h2>
+    <div class="grid">
+      <label>Type fiets
+        <select id="typeSelect"></select>
+      </label>
 
-  // Staat (conditie)
-  const states = Object.keys(APPDATA.cond_factors || {});
-  const stateSel = $('stateSelect');
-  if (stateSel) {
-    stateSel.innerHTML = '';
-    states.forEach(s => {
-      const o = document.createElement('option');
-      o.value = s;
-      o.textContent = s;
-      stateSel.appendChild(o);
-    });
-  }
+      <label>Merk
+        <select id="brandSelect"></select>
+      </label>
 
-  // Accu-staat
-  const accuStates = Object.keys(APPDATA.accu_state_factors || {});
-  const accuSel = $('accuStateSelect');
-  if (accuSel) {
-    accuSel.innerHTML = '';
-    accuStates.forEach(s => {
-      const o = document.createElement('option');
-      o.value = s;
-      o.textContent = s;
-      accuSel.appendChild(o);
-    });
-  }
+      <label>Staat
+        <select id="stateSelect"></select>
+      </label>
 
-  // Listeners
-  if (typeSel) typeSel.addEventListener('change', onTypeChange);
-  const hasAccuSel = $('hasAccuSelect');
-  if (hasAccuSel) hasAccuSel.addEventListener('change', updateAccuVisibility);
+      <label>Heeft accu?
+        <select id="hasAccuSelect">
+          <option value="auto" selected>Automatisch (per type)</option>
+          <option value="ja">Ja</option>
+          <option value="nee">Nee</option>
+        </select>
+      </label>
 
-  // Alleen listener toevoegen als er géén inline onclick staat
-  const calcBtn = $('calcBtn');
-  if (calcBtn && !calcBtn.getAttribute('onclick')) {
-    calcBtn.addEventListener('click', calculate);
-  }
+      <label id="accuStateWrap">Accustaat
+        <select id="accuStateSelect"></select>
+      </label>
 
-  const printBtn = $('printOfferBtn');
-  if (printBtn) {
-    printBtn.addEventListener('click', showOffer);
-  }
+      <label>Leeftijd (0–15 jaar)
+        <input id="ageInput" type="number" min="0" max="15" value="5" />
+      </label>
 
-  // Eerste state
-  onTypeChange();
-  updateAccuVisibility();
+      <label>Nieuwprijs / Aanschafprijs (€)
+        <input id="priceInput" type="number" min="0" step="1" placeholder="Laat leeg voor referentieprijs" />
+      </label>
 
-  // Jaar in footer
-  const yearEl = $('year');
+      <div class="hint" id="refPriceHint"></div>
+    </div>
+
+    <button id="calcBtn" type="button" class="primary">Bereken inruilwaarde</button>
+  </section>
+
+  <section class="card" id="resultCard" hidden>
+    <h2>Resultaat</h2>
+    <div class="result-line">
+      <span>Inruilwaarde</span>
+      <strong><span id="resultValue">€ 0</span></strong>
+    </div>
+    <details>
+      <summary>Toelichting en factoren</summary>
+      <ul>
+        <li>Leeftijdsfactor: <span id="factorAge"></span></li>
+        <li>Conditiefactor: <span id="factorState"></span></li>
+        <li>Accufactor: <span id="factorAccu"></span></li>
+        <li>Merkfactor: <span id="factorBrand"></span></li>
+      </ul>
+    </details>
+    <div class="actions">
+      <button id="printOfferBtn" type="button">Maak offerte (PDF/Print)</button>
+    </div>
+  </section>
+
+  <section class="card" id="offerCard">
+    <h2>Offerte – Inruilvoorstel</h2>
+    <div class="offer-grid">
+      <label>Naam Klant:
+        <input id="offerName" placeholder="Naam klant" />
+      </label>
+
+      <div class="kv">
+        <div>Type fiets:</div><div id="offerType"></div>
+        <div>Merk:</div><div id="offerBrand"></div>
+        <div>Staat:</div><div id="offerState"></div>
+        <div>Leeftijd:</div><div id="offerAge"></div>
+      </div>
+
+      <div class="offer-total">Inruilprijs: <strong id="offerTotal">€ 0</strong></div>
+
+      <p class="small">
+        Deze inruilwaarde is tot stand gekomen op basis van type fiets, leeftijd en algemene staat.
+        Dit voorstel is indicatief en onder voorbehoud van fysieke inspectie.
+      </p>
+
+      <div class="kv">
+        <div>Dealer:</div><div id="offerDealer"></div>
+      </div>
+      <div class="kv">
+        <div>Datum:</div><div id="offerDate"></div>
+      </div>
+
+      <div class="signatures">
+        <div>Handtekening klant: __________________________</div>
+        <div>Handtekening dealer: __________________________</div>
+      </div>
+
+      <div class="actions no-print">
+        <button type="button" onclick="window.print()">Print / Exporteer PDF</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <small>© <span id="year"></span> Inruilwaarde Fietsen by FsiD BV</small><br />
+  <small class="muted">
+    Disclaimer: Fiets Service ID is niet aansprakelijk voor de weergegeven inruilprijs.
+    Alle getoonde waarden zijn indicatief. De uiteindelijke inruilprijs wordt uitsluitend bepaald door de dealer.
+  </small>
+  <div><strong id="dealerFooter"></strong></div>
+</footer>
+
+<!-- ===================================================
+     RUNTIME GUARD + ACCU UI SAFETY
+     (deze guard wikkelt elke toewijzing aan window.calculate)
+=================================================== -->
+<script>
+  // Jaar in footer (fallback; app.js zet dit ook)
+  const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-}
 
-/* -----------------------------------------------------
-   3) Type-wijziging → merken + referentieprijs
-   ----------------------------------------------------- */
-function onTypeChange() {
-  if (!APPDATA) return;
-
-  const t = $('typeSelect')?.value;
-  const brandsMap = (APPDATA.brands && t) ? (APPDATA.brands[t] || {}) : {};
-  const brandSel = $('brandSelect');
-
-  if (brandSel) {
-    brandSel.innerHTML = '';
-    Object.keys(brandsMap).forEach(b => {
-      const o = document.createElement('option');
-      o.value = b;
-      o.textContent = b;
-      brandSel.appendChild(o);
+  // Robuuste wrapper: werkt ook als calculate later wordt gedefinieerd
+  (function () {
+    let realCalculate = null;
+    Object.defineProperty(window, "calculate", {
+      configurable: true,
+      get() { return realCalculate; },
+      set(fn) {
+        if (typeof fn !== "function") { realCalculate = fn; return; }
+        realCalculate = function () {
+          try {
+            const meta = JSON.parse(localStorage.getItem('fsid_install_meta') || 'null');
+            if (!meta || !meta.dealer || localStorage.getItem('fsid_install_activated') !== '1') {
+              alert('Installatie vereist. Vul dealernaam en geldige installatiecode in.');
+              location.reload();
+              return;
+            }
+          } catch (e) {
+            alert('Installatie vereist. Vul dealernaam en geldige installatiecode in.');
+            location.reload();
+            return;
+          }
+          return fn.apply(this, arguments);
+        };
+      }
     });
-    if (!brandSel.value && brandSel.options.length > 0) {
-      brandSel.value = brandSel.options[0].value;
-    }
-  }
+  })();
+</script>
 
-  // Referentieprijs-hint
-  const tcfg = APPDATA.types.find(x => x.type === t);
-  const hint = $('refPriceHint');
-  if (hint && tcfg) {
-    hint.textContent = `Referentie nieuwprijs voor ${t}: € ${Math.round(tcfg.ref_price).toLocaleString('nl-NL')}`;
-  }
-}
+<!-- App logica -->
+./app.js</script>
 
-/* -----------------------------------------------------
-   4) Accu-veld tonen/verbergen
-   ----------------------------------------------------- */
-function updateAccuVisibility() {
-  if (!APPDATA) return;
-
-  const wrap = $('accuStateWrap');
-  const t = $('typeSelect')?.value;
-  const tcfg = APPDATA.types.find(x => x.type === t);
-  const override = $('hasAccuSelect')?.value; // auto/ja/nee
-
-  let hasAccu = tcfg?.has_accu_default;
-  if (override === 'ja') hasAccu = true;
-  else if (override === 'nee') hasAccu = false;
-
-  if (wrap) wrap.style.display = hasAccu ? 'flex' : 'none';
-}
-
-/* -----------------------------------------------------
-   5) BEREKENING – jouw originele formule
-   ----------------------------------------------------- */
-function calculate() {
-  if (!APPDATA) return;
-
-  const t         = $('typeSelect')?.value;
-  const brand     = $('brandSelect')?.value;
-  const state     = $('stateSelect')?.value;
-  const accuState = $('accuStateSelect')?.value;
-
-  const ageRaw = $('ageInput')?.value || '0';
-  const age = Math.max(0, Math.min(15, parseInt(ageRaw, 10)));
-
-  const priceInput = $('priceInput')?.value;
-  const tcfg = APPDATA.types.find(x => x.type === t);
-  const price = priceInput ? parseFloat(priceInput) : (tcfg?.ref_price || 0);
-
-  // Heeft deze fiets (nu) een accu?
-  const override = $('hasAccuSelect')?.value; // auto/ja/nee
-  let hasAccu = tcfg?.has_accu_default;
-  if (override === 'ja') hasAccu = true;
-  else if (override === 'nee') hasAccu = false;
-
-  // Factoren
-  const ageFactor   = (APPDATA.restwaarde?.zonderaccu?.[age]) ?? 0;        // leeftijdsfactor
-  const condFactor  = (APPDATA.cond_factors?.[state]) ?? 1;                 // conditie
-  const accuFactor  = hasAccu ? ((APPDATA.accu_state_factors?.[accuState]) ?? 1) : 1; // accu
-  const brandFactor =
-    (APPDATA.brands?.[t] && APPDATA.brands[t][brand])
-      ? APPDATA.brands[t][brand]
-      : (APPDATA.brands?.[t]?.Overig ?? 0.85);
-
-  // Waarde
-  let value = price * ageFactor * condFactor * accuFactor * brandFactor;
-  const rounded = Math.round(value);
-
-  // UI – resultaat
-  const resultValue = $('resultValue');
-  const resultCard  = $('resultCard');
-  if (resultValue) resultValue.textContent = fmt.format(rounded);
-  if (resultCard)  resultCard.hidden = false;
-
-  // UI – detailfactoren
-  const setTxt = (id, v) => { const el = $(id); if (el) el.textContent = (v ?? 0).toLocaleString('nl-NL'); };
-  setTxt('factorAge',   ageFactor);
-  setTxt('factorState', condFactor);
-  setTxt('factorAccu',  accuFactor);
-  setTxt('factorBrand', brandFactor);
-
-  // UI – offertevelden
-  const offerStateTxt = hasAccu ? `${state}, accustaat: ${accuState}` : state;
-  const d = new Date(), pad = (n) => String(n).padStart(2, '0');
-
-  const mapOffer = {
-    offerType:  t,
-    offerBrand: brand,
-    offerState: offerStateTxt,
-    offerAge:   `${age} jaar`,
-    offerTotal: fmt.format(rounded),
-    offerDate:  `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`
-  };
-
-  Object.entries(mapOffer).forEach(([id, val]) => { const el = $(id); if (el) el.textContent = val; });
-}
-
-/* -----------------------------------------------------
-   6) Offerte tonen
-   ----------------------------------------------------- */
-function showOffer() {
-  const card = $('offerCard');
-  if (card) {
-    card.scrollIntoView({ behavior: 'smooth' });
-    card.classList.add('print');
-  }
-}
-
-/* -----------------------------------------------------
-   7) Dealer uit installatie in footer & offerte
-   ----------------------------------------------------- */
-function injectDealerFromLocalStorage() {
-  try {
-    const meta = JSON.parse(localStorage.getItem('fsid_install_meta') || 'null');
-    if (!meta || !meta.dealer) return;
-
-    const footer = $('dealerFooter');
-    if (footer) footer.textContent = `Dealer: ${meta.dealer}`;
-
-    const offerDealer = $('offerDealer');
-    if (offerDealer) offerDealer.textContent = `Dealer: ${meta.dealer}`;
-  } catch (e) {
-    console.warn('Kon dealer/meta niet lezen', e);
-  }
-}
-
-/* -----------------------------------------------------
-   8) PWA-install prompt (optioneel, zoals in oude versie)
-   ----------------------------------------------------- */
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const btn = $('installBtn');
-  if (!btn) return;
-  btn.hidden = false;
-  btn.addEventListener('click', async () => {
-    btn.hidden = true;
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-  });
-});
-
-/* -----------------------------------------------------
-   9) Start de app
-   ----------------------------------------------------- */
-window.addEventListener('load', load);
+</body>
+</html>
