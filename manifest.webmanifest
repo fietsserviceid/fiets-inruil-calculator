@@ -1,28 +1,10 @@
 
 {
-  "name": "Fiets Inruil Calculator",
-  "short_name": "Inruil Fiets",
-  "start_url": "./index.html",
-  "scope": "./",
+  "name": "Inruilwaarde Fietsen",
+  "short_name": "Inruilwaarde",
+  "start_url": ".",
   "display": "standalone",
-
-  "background_color": "#0078D7",
-  "theme_color": "#0078D7",
-
-  "description": "Professionele inruilwaarde-calculator voor fietsen door Fiets Service ID.",
-
-  "icons": [
-    {
-      "src": "./icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#ffffff",
+  "theme_color": "#0078D7"
 }
+``
