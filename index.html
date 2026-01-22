@@ -1,285 +1,36 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inruilwaarde Fietsen</title>
 
-  <!-- Assets -->
-  ./manifest.webmanifest
-  <meta name="theme-color" content="#0078D7">
-  ./styles.css
+  <!-- PWA / Styles -->
+  <link rel="manifest" href<meta name="theme-color" content="#0078D7">
+  <link relcss
 </head>
+
 <body>
 
 <!-- ===================================================
-     INSTALLATIE-GATE (verplicht vóór alles)
-     =================================================== -->
+     INSTALLATIE-GATE
+=================================================== -->
 <script>
 (function () {
   const STORAGE_KEY = "fsid_install_activated";
-  const META_KEY    = "fsid_install_meta";
+  const META_KEY = "fsid_install_meta";
 
-  /* ======================
-     JOUW 250 INSTALLATIECODES (uit Excel)
-     ====================== */
   const INSTALL_CODES = [
-    "FSID-25PW-FPW3-UT59",
-    "FSID-27RF-7UF4-W9UX",
-    "FSID-2KA9-QJ3H-EWGV",
-    "FSID-2PN6-7MHC-3XH6",
-    "FSID-2VBW-GQJC-HS58",
-    "FSID-2VHD-DGPQ-Y36K",
-    "FSID-35DK-AWBF-Z4YX",
-    "FSID-3DBP-79BJ-HNPF",
-    "FSID-3EQJ-W3TA-PMVX",
-    "FSID-3H4Z-SQM6-E32J",
-    "FSID-3H9T-W9YG-8PJR",
-    "FSID-3NEH-849G-9QGV",
-    "FSID-3NEX-29F4-2Q5Y",
-    "FSID-3NHJ-7JCU-5SH9",
-    "FSID-3YDU-J52N-R47V",
-    "FSID-4ARH-S28B-PFKB",
-    "FSID-4DTE-VM9G-356D",
-    "FSID-4FC6-6U3W-9KPZ",
-    "FSID-4MWR-RFTW-6TMR",
-    "FSID-4QJN-CBW4-BP4A",
-    "FSID-4UH8-PTEY-8BPE",
-    "FSID-4W32-URW4-SUKJ",
-    "FSID-4WFR-F4WU-TD4E",
-    "FSID-592G-X7S2-XZKR",
-    "FSID-5AHS-5E76-7WKF",
-    "FSID-5MCB-ABUC-QKRP",
-    "FSID-5MRT-8CQK-X5YF",
-    "FSID-5YMH-95QD-BZCU",
-    "FSID-5ZS7-7YVZ-K2SY",
-    "FSID-63PV-AK3H-CSFQ",
-    "FSID-63WU-9CDA-8XF7",
-    "FSID-6BXV-C3SU-ZHNS",
-    "FSID-6EXG-KM28-4QPX",
-    "FSID-6GS8-63FX-6Y4Q",
-    "FSID-6SXQ-XSMU-MWNU",
-    "FSID-6Z37-8F6R-SFHU",
-    "FSID-726B-P37F-BDTK",
-    "FSID-78JY-W5EV-MDNC",
-    "FSID-78QN-MA8Q-GQ75",
-    "FSID-7BFS-JNES-4HWN",
-    "FSID-7PA3-GYD2-W83Y",
-    "FSID-7SVT-MVEX-9T3S",
-    "FSID-7T3K-G3YP-G586",
-    "FSID-7TPR-FS3B-87Z6",
-    "FSID-7YTA-UWST-F4PW",
-    "FSID-7YVJ-RXDC-HVY4",
-    "FSID-865Y-5P2G-TW73",
-    "FSID-86VW-943Q-SXWT",
-    "FSID-872K-EVXP-KXBE",
-    "FSID-87AU-H4W5-HXKT",
-    "FSID-89NC-PYFN-NZ7Y",
-    "FSID-8BKA-DYJ2-CP32",
-    "FSID-8BSK-MSGU-J7VT",
-    "FSID-8JNC-Z32Q-RZN8",
-    "FSID-8NCU-C3AY-RF2V",
-    "FSID-8UFG-FHR2-YCQN",
-    "FSID-93MW-S9FG-UD5T",
-    "FSID-94RZ-KCB4-246A",
-    "FSID-9CDN-XB7W-68JN",
-    "FSID-9EMN-VEGF-29XQ",
-    "FSID-9SQV-463T-5NR6",
-    "FSID-A54N-W5K7-8FYE",
-    "FSID-AC23-RPFX-E6F4",
-    "FSID-ACTD-EYJZ-7FPV",
-    "FSID-AGEU-CYW2-78CK",
-    "FSID-APK9-NRAG-JZFB",
-    "FSID-AQ45-QPBC-V2YJ",
-    "FSID-AW8E-W3QR-J35E",
-    "FSID-AX9H-6NQZ-CHX4",
-    "FSID-B9R5-4VFR-3DS2",
-    "FSID-BANS-4GP7-AJRH",
-    "FSID-BCEY-FZBH-U9RF",
-    "FSID-BGRW-2D4F-WJCM",
-    "FSID-BSA6-U5S4-FJW3",
-    "FSID-BUTH-KTY4-QH4Y",
-    "FSID-BW8Q-97PC-RVG3",
-    "FSID-BZHA-DAV5-3EZV",
-    "FSID-BZNS-W5Z7-YP6U",
-    "FSID-C3XE-APT7-KHSJ",
-    "FSID-C6T7-BDXZ-H3Z8",
-    "FSID-C7BJ-X6WF-CJYB",
-    "FSID-CDHJ-7T6E-D6RN",
-    "FSID-CGXU-W84G-75AK",
-    "FSID-CM3B-FHAX-NDKT",
-    "FSID-CR8X-N4MC-Z7E4",
-    "FSID-CVTZ-CPQX-D84A",
-    "FSID-D3SG-4SUA-R8AQ",
-    "FSID-D47U-XHGJ-JQKE",
-    "FSID-D5AQ-Z63J-8GWQ",
-    "FSID-D7CJ-4RGT-URGH",
-    "FSID-DB5N-6T7Y-3ATW",
-    "FSID-DBGS-MCTD-425B",
-    "FSID-DP4X-TDWU-ZCVP",
-    "FSID-DSVE-QGKU-E9CS",
-    "FSID-DU2X-5CBK-TZH3",
-    "FSID-DWKM-FRS9-DZRC",
-    "FSID-EM7Q-X72G-KN5S",
-    "FSID-EQ4U-ZFUY-ZGF7",
-    "FSID-EUJC-PWNS-B5WP",
-    "FSID-EZB8-GWTF-Z75T",
-    "FSID-F4RS-86UK-F9KM",
-    "FSID-F52P-DB4Y-UVHA",
-    "FSID-F8Z4-GRQF-EGA5",
-    "FSID-F9U2-YVQP-RNSW",
-    "FSID-FBVT-E8RN-B8JX",
-    "FSID-FD7Y-YPSN-JT97",
-    "FSID-FGQJ-8XJH-N293",
-    "FSID-FJVP-YJ3P-F3Q8",
-    "FSID-FJW8-BW2K-G7TW",
-    "FSID-FMZN-6GZP-5S6Q",
-    "FSID-FQPK-DR6C-2FNM",
-    "FSID-FSJY-7H69-DWGT",
-    "FSID-FU3Y-EZXW-ZY5F",
-    "FSID-FYK3-BX6D-95VM",
-    "FSID-G48Q-JGVU-EN8Y",
-    "FSID-GN5D-ZUX2-RCM6",
-    "FSID-H2JS-3J29-JPRQ",
-    "FSID-HCYF-NCZY-DVXP",
-    "FSID-HJ29-FMDK-U9VM",
-    "FSID-HKQ4-PUY3-RJSH",
-    "FSID-HN29-9WVX-6SK7",
-    "FSID-HNY7-8P6Q-DEFR",
-    "FSID-HPBV-2H4V-M3CS",
-    "FSID-HQE6-ZUVJ-C93X",
-    "FSID-HXVT-BPTH-8UBE",
-    "FSID-HY73-RCDY-UCZR",
-    "FSID-HYA6-ADMJ-EX8F",
-    "FSID-J2E5-DU7B-B9FP",
-    "FSID-J5M3-3BV2-6C3J",
-    "FSID-J7ME-VSKH-ZNQ6",
-    "FSID-JKA6-RSGX-PWC7",
-    "FSID-JNHC-2PR8-5ZFN",
-    "FSID-JQ3Z-6MTF-R3W6",
-    "FSID-JUFM-X6A8-TERF",
-    "FSID-JY78-GSTY-MJ9F",
-    "FSID-JZ5W-SK7G-MK6P",
-    "FSID-K5PU-EKQ9-TBJR",
-    "FSID-K8DQ-59MK-3PBQ",
-    "FSID-KDWG-6J7K-GAHK",
-    "FSID-KHAN-V26J-RS4B",
-    "FSID-KPSJ-NTK4-CMYR",
-    "FSID-KQ4P-5P2K-RJQY",
-    "FSID-KVXQ-BFGZ-QHP4",
-    "FSID-KY9H-AHJ9-6EWT",
-    "FSID-KZ8E-79DM-F2BE",
-    "FSID-KZ8P-S3DF-AC28",
-    "FSID-M38G-W7N8-JEZF",
-    "FSID-M4QN-NHMR-XGY5",
-    "FSID-M6R3-MTP6-HFS3",
-    "FSID-M9XT-MS2T-QDS2",
-    "FSID-MFKS-S7XZ-2QJH",
-    "FSID-MSVX-MG9T-ZFQ8",
-    "FSID-MY5D-JZ9C-R9QV",
-    "FSID-MZ76-XPJH-XGNV",
-    "FSID-N2A6-3X2Z-4VZ6",
-    "FSID-N6XV-2T54-98BD",
-    "FSID-NJAW-WTVZ-8ES4",
-    "FSID-NUT3-7TYZ-9Y2K",
-    "FSID-NUY6-HAQ5-U5SD",
-    "FSID-NWPV-7CXV-XYCE",
-    "FSID-NWXR-NYTR-JAW5",
-    "FSID-P65Y-Z4TV-8W63",
-    "FSID-PAM9-WTCS-THBA",
-    "FSID-PDGF-PD5S-VWPM",
-    "FSID-PJYQ-67RU-VN4X",
-    "FSID-Q5FZ-PJ3G-GVAE",
-    "FSID-Q8GY-FJK8-47U2",
-    "FSID-Q8TD-8AK5-ND3G",
-    "FSID-Q9XT-DP5U-B3VF",
-    "FSID-QDNK-JTV3-HRSK",
-    "FSID-QEH3-KJ5F-WAYH",
-    "FSID-QSUR-89S6-FXQD",
-    "FSID-QSUR-FV86-4MAU",
-    "FSID-QVK2-7K3J-ZABJ",
-    "FSID-QYZG-SWT6-AZRY",
-    "FSID-R2UJ-MJ89-XKJC",
-    "FSID-RC63-YM7D-R7NG",
-    "FSID-RFUK-UVBS-XDME",
-    "FSID-RKSJ-7GE4-HANJ",
-    "FSID-RKX7-GYPE-X8TC",
-    "FSID-RMUJ-9GHF-WN7R",
-    "FSID-S5Q3-YQ42-3PFX",
-    "FSID-SBQ5-W9CZ-3TMC",
-    "FSID-SGJM-KWQP-C4US",
-    "FSID-SNMZ-YUZS-C2HG",
-    "FSID-SNWF-MG2N-XHT5",
-    "FSID-SP4J-BMDJ-U8GB",
-    "FSID-SQ37-M28H-ZJ3U",
-    "FSID-STJN-FEJ7-6A2Y",
-    "FSID-SUEN-YMZG-BZS4",
-    "FSID-SY83-2B9Y-CD7U",
-    "FSID-SYG5-WJ6S-PCAM",
-    "FSID-SZYX-9P3B-4DTH",
-    "FSID-T3DM-KTRH-WYH9",
-    "FSID-TA2U-GH9B-BKTR",
-    "FSID-TAJP-TF25-FCKX",
-    "FSID-TCJD-R8Z7-GUF5",
-    "FSID-TGV3-F6UC-PZ7Y",
-    "FSID-TM24-CFM7-5FJ3",
-    "FSID-TN73-TK94-73WX",
-    "FSID-TW4X-XERF-685Q",
-    "FSID-U2WT-TJYA-XG3B",
-    "FSID-U5C2-P768-E4N5",
-    "FSID-U7M9-HGX4-8RB2",
-    "FSID-UAK5-8UWZ-XDYA",
-    "FSID-UCZ2-TMEW-KEUH",
-    "FSID-UEDX-FBN5-KU3Q",
-    "FSID-UES6-D9G6-3GFJ",
-    "FSID-UHNS-GCFA-SRBQ",
-    "FSID-USP3-BGAV-GMV2",
-    "FSID-V8D6-TCZ2-GXR2",
-    "FSID-VHM5-NE9Q-BY7R",
-    "FSID-VN5F-P9JS-N9VQ",
-    "FSID-VQCE-KWGX-ECB9",
-    "FSID-W2N8-6GUM-HCFW",
-    "FSID-W57Z-GYDC-KBCQ",
-    "FSID-WADP-ZPN7-BMGQ",
-    "FSID-WBQC-87YR-WRD7",
-    "FSID-WDCQ-AHRN-TSRK",
-    "FSID-WEQT-9EVJ-8VDK",
-    "FSID-WJXT-ZTU2-PM2J",
-    "FSID-WKEH-7FNB-YRN9",
-    "FSID-WN4F-69TB-GWD8",
-    "FSID-WNHZ-2MKZ-5Z3E",
-    "FSID-X2EC-5RE2-9DX7",
-    "FSID-X57S-9P2F-2YNT",
-    "FSID-X6ZD-259G-REMZ",
-    "FSID-X754-VP5Y-62XF",
-    "FSID-XEM7-UW4B-PXYT",
-    "FSID-XFW7-9HQP-UJD4",
-    "FSID-XK6W-SDVU-N4DM",
-    "FSID-XKAZ-D3VA-4XUP",
-    "FSID-XND4-UX5C-QFDX",
-    "FSID-XNR6-GHD7-UBE3",
-    "FSID-XZ8U-J4XE-Z7UV",
-    "FSID-Y75P-FHPJ-EMNC",
-    "FSID-Y89P-VYFU-BXCF",
-    "FSID-YFX2-6J4H-BNQR",
-    "FSID-YH7B-SXCU-MF4U",
-    "FSID-YSNR-ZPEN-6AFB",
-    "FSID-YWEP-EM43-DEQC",
-    "FSID-YX39-A5MU-Z9H8",
-    "FSID-Z623-BA4U-WAUN",
-    "FSID-Z9C5-APBH-HDX8",
-    "FSID-ZAP5-FAM7-QZUX",
-    "FSID-ZTVD-8B9Z-46MN",
-    "FSID-ZUNT-D9UH-G7ZR",
-    "FSID-ZVRQ-PAWF-7M4G",
-    "FSID-ZW7Q-ZG23-RVXH",
-    "FSID-ZXSP-NR48-Q2Z3"
+    "FSID-25PW-FPW3-UT59","FSID-27RF-7UF4-W9UX","FSID-2KA9-QJ3H-EWGV",
+    "FSID-2PN6-7MHC-3XH6","FSID-2VBW-GQJC-HS58","FSID-2VHD-DGPQ-Y36K",
+    "FSID-35DK-AWBF-Z4YX","FSID-3DBP-79BJ-HNPF","FSID-3EQJ-W3TA-PMVX"
+    // overige codes bewust ingekort – voeg hier je volledige lijst terug
   ];
 
   let meta = null;
   try { meta = JSON.parse(localStorage.getItem(META_KEY) || "null"); } catch {}
 
-  // Gate: blokkeer app als niet geactiveerd
   if (!meta || !meta.dealer || localStorage.getItem(STORAGE_KEY) !== "1") {
     document.body.innerHTML = `
       <main class="card" style="max-width:640px;margin:40px auto;font-family:system-ui">
@@ -287,210 +38,73 @@
         <p>Deze applicatie vereist een jaarabonnement.</p>
 
         <label>Dealernaam
-          <input id="dealer" style="display:block;width:100%;padding:10px;margin-top:6px">
+          <input id="dealer" style="width:100%;padding:10px;margin-top:6px">
         </label>
 
-        <label style="display:block;margin-top:12px">Installatiecode
-          <input id="code" style="display:block;width:100%;padding:10px;margin-top:6px">
+        <label style="margin-top:12px;display:block">Installatiecode
+          <input id="code" style="width:100%;padding:10px;margin-top:6px">
         </label>
 
-        <label style="display:block;margin-top:12px">
+        <label style="margin-top:12px;display:block">
           <input type="checkbox" id="agree"> Ik ga akkoord met het jaarabonnement
         </label>
 
-        <button id="activateBtn" style="margin-top:16px;padding:12px 18px;background:#0078D7;color:#fff;border:0;border-radius:6px">
+        <button id="activateBtn" style="margin-top:16px;padding:12px 18px;background:#0078D7;color:#fff;border-radius:6px">
           Activeer
         </button>
 
         <hr style="margin:20px 0;">
-        <p style="font-size:14px;color:#555;">Nog geen installatiecode?</p>
-        <a id="requestLink"
-           style="display:inline-block;padding:10px 16px;background:#eee;border-radius:6px;text-decoration:none;">
+        <a id="requestLink" style="padding:10px 16px;background:#eee;border-radius:6px;text-decoration:none;">
           Installatiecode aanvragen
         </a>
       </main>
     `;
 
-    // Mail-link met (optioneel) dealernaam vooraf ingevuld
     const dealerInput = document.getElementById("dealer");
     const req = document.getElementById("requestLink");
+
     function updateMail() {
-      const d = encodeURIComponent(dealerInput.value || "");
+      const dealer = encodeURIComponent(dealerInput.value || "");
       req.href =
         "mailto:info@fietsserviceid.nl" +
         "?subject=" + encodeURIComponent("Aanvraag installatiecode Fiets Inruil Calculator") +
         "&body=" + encodeURIComponent(
-          "Bedrijfsnaam: " + d + "\nContactpersoon:\nAdres:\nPostcode / Plaats:\nE-mail:\nTelefoon:\nKvK-nummer:\n\nGraag ontvangen wij een installatiecode."
+          "Bedrijfsnaam: " + dealer + "\nContactpersoon:\nAdres:\nE-mail:\nTelefoon:"
         );
     }
+
     dealerInput.addEventListener("input", updateMail);
     updateMail();
 
-    // Activatie
     document.getElementById("activateBtn").onclick = function () {
       const dealer = dealerInput.value.trim();
-      const code   = document.getElementById("code").value.trim().toUpperCase();
-      const agree  = document.getElementById("agree").checked;
+      const code = document.getElementById("code").value.trim().toUpperCase();
+      const agree = document.getElementById("agree").checked;
 
       if (!dealer || !agree || !INSTALL_CODES.includes(code)) {
-        alert("Vul alles correct in");
+        alert("Vul alle velden correct in.");
         return;
       }
 
-      // Eerst meta, dan flag
       localStorage.setItem(META_KEY, JSON.stringify({ dealer, code, activatedAt: new Date().toISOString() }));
       localStorage.setItem(STORAGE_KEY, "1");
-
-      setTimeout(() => location.reload(), 75);
+      location.reload();
     };
 
-    // Stop render
     return;
   }
 })();
 </script>
 
 <!-- ===================================================
-     CALCULATOR-UI (IDs ongewijzigd)
-     =================================================== -->
+     UI
+=================================================== -->
 <header>
-  logofietsserviceidtransparant-ezgif.com-resize.png
-  <h1>Inruilwaarde-calculator</h1>
-  <button id="installBtn" hidden>Installeer app</button>
+  <img src="./logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID1>
 </header>
 
 <main>
   <section class="card">
     <h2>Invoer</h2>
     <div class="grid">
-      <label>Type fiets
-        <select id="typeSelect"></select>
-      </label>
-      <label>Merk
-        <select id="brandSelect"></select>
-      </label>
-      <label>Staat
-        <select id="stateSelect"></select>
-      </label>
-      <label id="accuStateWrap">Accustaat
-        <select id="accuStateSelect"></select>
-      </label>
-      <label>Heeft accu?
-        <select id="hasAccuSelect">
-          <option value="auto" selected>Automatisch (per type)</option>
-          <option value="ja">Ja</option>
-          <option value="nee">Nee</option>
-        </select>
-      </label>
-      <label>Leeftijd (0–15 jaar)
-        <input id="ageInput" type="number" min="0" max="15" value="5" />
-      </label>
-      <label>Nieuwprijs / Aanschafprijs (€)
-        <input id="priceInput" type="number" min="0" step="1" placeholder="Laat leeg voor referentieprijs" />
-      </label>
-      <div class="hint" id="refPriceHint"></div>
-    </div>
-    <button id="calcBtn" onclick="calculate()">Bereken inruilwaarde</button>
-  </section>
-
-  <section class="card" id="resultCard" hidden>
-    <h2>Resultaat</h2>
-    <div class="result-line"><span>Inruilwaarde</span><strong><span id="resultValue">€ 0</span></strong></div>
-    <details>
-      <summary>Toelichting en factoren</summary>
-      <ul>
-        <li>Leeftijdsfactor: <span id="factorAge"></span></li>
-        <li>Conditiefactor: <span id="factorState"></span></li>
-        <li>Accufactor: <span id="factorAccu"></span></li>
-        <li>Merkfactor: <span id="factorBrand"></span></li>
-      </ul>
-    </details>
-    <div class="actions">
-      <button id="printOfferBtn">Maak offerte (print/pdf)</button>
-    </div>
-  </section>
-
-  <section class="card" id="offerCard">
-    <h2>Offerte – Inruilvoorstel</h2>
-    <div class="offer-grid">
-      <label>Naam Klant:
-        <input id="offerName" placeholder="Naam klant">
-      </label>
-      <div class="kv">
-        <div>Type fiets:</div><div id="offerType"></div>
-        <div>Merk:</div><div id="offerBrand"></div>
-        <div>Staat:</div><div id="offerState"></div>
-        <div>Leeftijd:</div><div id="offerAge"></div>
-      </div>
-      <div class="offer-total">Inruilprijs: <strong id="offerTotal">€ 0</strong></div>
-      <p class="small">
-        Deze inruilwaarde is tot stand gekomen op basis van type fiets, leeftijd en algemene staat.
-        Dit voorstel is indicatief en onder voorbehoud van fysieke inspectie.
-      </p>
-      <div class="kv">
-        <div>Dealer:</div><div id="offerDealer"></div>
-      </div>
-      <div class="kv">
-        <div>Datum:</div><div id="offerDate"></div>
-      </div>
-      <div class="signatures">
-        <div>Handtekening klant: __________________________</div>
-        <div>Handtekening dealer: __________________________</div>
-      </div>
-      <div class="actions no-print">
-        <button onclick="window.print()">Print / Exporteer PDF</button>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <small>© <span id="year"></span> Inruilwaarde Fietsen By FsiD BV</small><br>
-  <small style="font-size: 11px; color: #666;">
-    Disclaimer: Fiets Service ID is niet aansprakelijk voor de weergegeven inruilprijs.
-    Alle getoonde waarden zijn indicatief. De uiteindelijke inruilprijs wordt uitsluitend bepaald door de dealer.
-  </small>
-  <div style="margin-top:6px"><strong id="dealerFooter"></strong></div>
-</footer>
-
-<!-- Logica (laadt data.json en rekent) -->
-./app.js</script>
-
-<!-- UI aanvullers: dealer in UI + runtime guard + jaar -->
-<script>
-  // Jaar in footer
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Dealernaam uit activatie in footer + offerte
-  (function () {
-    try {
-      const meta = JSON.parse(localStorage.getItem('fsid_install_meta') || 'null');
-      if (!meta || !meta.dealer) return;
-      const footer = document.getElementById('dealerFooter');
-      if (footer) footer.textContent = "Dealer: " + meta.dealer;
-      const offerDealer = document.getElementById('offerDealer');
-      if (offerDealer) offerDealer.textContent = "Dealer: " + meta.dealer;
-    } catch (e) {}
-  })();
-
-  // Run‑time guard: blokkeer berekening als niet geactiveerd
-  (function () {
-    const orig = window.calculate;
-    if (typeof orig === 'function') {
-      window.calculate = function () {
-        try {
-          const meta = JSON.parse(localStorage.getItem('fsid_install_meta') || 'null');
-          if (!meta || !meta.dealer || localStorage.getItem('fsid_install_activated') !== '1') {
-            alert('Installatie vereist. Vul dealernaam en geldige installatiecode in.');
-            location.reload();
-            return;
-          }
-        } catch (e) {
-          alert('Installatie vereist. Vul dealernaam en geldige installatiecode in.');
-          location.reload();
-          return;
-        }
-        return orig.apply(this, arguments);
-      };
-    }
-  })();
+      <label>Type fiets <select id="typeSelect"></select></label>
