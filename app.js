@@ -5,11 +5,27 @@ const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR',
 const MIN_INRUIL = null;        // bijv. 25
 const MAX_PCT_VAN_NIEUW = null; // bijv. 0.9
 
+
 async function load() {
   // Data is beschermd achter licentie-token
   const token = (typeof getToken==='function' ? getToken() : (localStorage.getItem('fsid_license_token')||''));
-  const res = await fetch('./api/data', { headers: { 'Authorization': 'Bearer ' + token } });
-  APPDATA = await res.json();
+
+  // 1) Probeer API (indien aanwezig)
+  try {
+    const res = await fetch('./api/data', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (res.ok) {
+      APPDATA = await res.json();
+      initUI();
+      return;
+    }
+    console.warn('API niet beschikbaar (status', res.status, '), val terug op data.json');
+  } catch(e) {
+    console.warn('API niet bereikbaar, val terug op data.json', e);
+  }
+
+  // 2) Fallback: lokale data.json
+  const localRes = await fetch('./data.json?v=20260124-2');
+  APPDATA = await localRes.json();
   initUI();
 }
 

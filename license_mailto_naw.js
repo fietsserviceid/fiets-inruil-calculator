@@ -17,22 +17,20 @@
 
   function setActiveTab(tab){
     if(tab === 'activate'){
-      tabActivate.classList.add('active');
-      tabRequest.classList.remove('active');
-      panelActivate.style.display = '';
-      panelRequest.style.display = 'none';
+      tabActivate?.classList.add('active');
+      tabRequest?.classList.remove('active');
+      if (panelActivate) panelActivate.style.display = '';
+      if (panelRequest) panelRequest.style.display = 'none';
     } else {
-      tabRequest.classList.add('active');
-      tabActivate.classList.remove('active');
-      panelRequest.style.display = '';
-      panelActivate.style.display = 'none';
+      tabRequest?.classList.add('active');
+      tabActivate?.classList.remove('active');
+      if (panelRequest) panelRequest.style.display = '';
+      if (panelActivate) panelActivate.style.display = 'none';
     }
   }
 
-  if (tabActivate && tabRequest){
-    tabActivate.addEventListener('click', function(){ setActiveTab('activate'); });
-    tabRequest.addEventListener('click', function(){ setActiveTab('request'); });
-  }
+  tabActivate?.addEventListener('click', function(){ setActiveTab('activate'); });
+  tabRequest?.addEventListener('click', function(){ setActiveTab('request'); });
 
   function updateBadgeActive(active){
     if(!badge) return;
@@ -59,12 +57,23 @@
 
   if (btnActivate && input){
     btnActivate.addEventListener('click', function(){
-      const val = (input.value||'').trim().toUpperCase();
-      if (window.validateFsIdCode && window.validateFsIdCode(val)){
-        localStorage.setItem('fsid_license_token', val);
+      let raw = (input.value||'').trim().toUpperCase();
+      // Normaliseer whitespace en streepjes
+      raw = raw.replace(/\s+/g, '');
+      raw = raw.replace(/[–—−]/g, '-');
+      // Reformat als iemand streepjes wegliet
+      const compact = raw.replace(/-/g, '');
+      const m = /^FSID2026([A-Z0-9]{12})([A-Z0-9]{2})$/.exec(compact);
+      if (m) {
+        const body = m[1];
+        const cc = m[2];
+        raw = `FSID-2026-${body.slice(0,4)}-${body.slice(4,8)}-${body.slice(8,12)}-${cc}`;
+      }
+
+      if (window.validateFsIdCode && window.validateFsIdCode(raw)){
+        localStorage.setItem('fsid_license_token', raw);
         if (msgActivate){ msgActivate.textContent = 'Activatie geslaagd. Licentie geactiveerd.'; msgActivate.style.color = 'green'; }
         ensureActivation();
-        // Herlaad data achter licentie-token
         if (typeof load === 'function') { try { load(); } catch(e){} }
       } else {
         if (msgActivate){ msgActivate.textContent = 'Ongeldige activatiecode. Controleer je code of vraag een nieuwe aan.'; msgActivate.style.color = 'crimson'; }
