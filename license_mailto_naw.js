@@ -1,101 +1,111 @@
-// license_mailto_naw.js – aanvraag via mailto met alleen NAW-gegevens; activatie & verify via API
-const API_BASE = './api';
 
-function setBadge(text, ok=false){
-  const el = document.getElementById('licenseBadge');
-  if (!el) return;
-  el.textContent = text;
-  el.style.color = ok ? '#137333' : '';
-}
+(function(){
+  function $(id){ return document.getElementById(id); }
 
-function getToken(){ try { return localStorage.getItem('fsid_license_token') || ''; } catch(e){ return ''; } }
-function setToken(tok){ try { localStorage.setItem('fsid_license_token', tok||''); } catch(e){} }
+  const overlay = $('licenseOverlay');
+  const badge = $('licenseBadge');
+  const input = $('activationCodeInput');
+  const btnActivate = $('btnActivate');
+  const btnRequest = $('btnRequest');
+  const msgActivate = $('activateMsg');
+  const msgRequest = $('requestMsg');
 
-async function verifyLicense(){
-  const tok = getToken();
-  if(!tok) return false;
-  try{
-    const res = await fetch(`${API_BASE}/verify?token=${encodeURIComponent(tok)}`, {cache:'no-store'});
-    if(!res.ok) return false;
-    const json = await res.json();
-    if(json && json.active){ setBadge(`Licentie geactiveerd – geldig tot ${json.validUntil||''}`, true); return true; }
-    return false;
-  }catch(err){ return false; }
-}
+  const tabActivate = $('tabActivate');
+  const tabRequest = $('tabRequest');
+  const panelActivate = $('panelActivate');
+  const panelRequest = $('panelRequest');
 
-function showOverlay(show){
-  const overlay = document.getElementById('licenseOverlay');
-  if(!overlay) return; overlay.style.display = show ? 'flex' : 'none';
-}
-
-async function ensureLicenseReady(){
-  const ok = await verifyLicense();
-  if(ok){ showOverlay(false); return true; }
-  const tabActivate = document.getElementById('tabActivate');
-  const tabRequest = document.getElementById('tabRequest');
-  const panelActivate = document.getElementById('panelActivate');
-  const panelRequest = document.getElementById('panelRequest');
-  if(tabActivate && tabRequest && panelActivate && panelRequest){
-    tabActivate.addEventListener('click', ()=>{ tabActivate.classList.add('active'); tabRequest.classList.remove('active'); panelActivate.style.display='block'; panelRequest.style.display='none'; });
-    tabRequest.addEventListener('click', ()=>{ tabRequest.classList.add('active'); tabActivate.classList.remove('active'); panelActivate.style.display='none'; panelRequest.style.display='block'; });
-  }
-  const btnReq = document.getElementById('btnRequest');
-  if(btnReq){ btnReq.disabled = false; btnReq.addEventListener('click', requestInstallCodeMailtoNAW); }
-  const btnAct = document.getElementById('btnActivate');
-  if(btnAct){ btnAct.addEventListener('click', activateCode); }
-  showOverlay(true);
-  return false;
-}
-
-function requestInstallCodeMailtoNAW(){
-  const msg = document.getElementById('requestMsg');
-  if(msg) msg.textContent = '';
-
-  const orgName = document.getElementById('orgName')?.value?.trim();
-  const contactName = document.getElementById('contactName')?.value?.trim();
-  const email = document.getElementById('email')?.value?.trim();
-  const kvk = document.getElementById('kvk')?.value?.trim();
-  const phone = document.getElementById('phone')?.value?.trim();
-  const street = document.getElementById('street')?.value?.trim();
-  const zip = document.getElementById('zip')?.value?.trim();
-  const city = document.getElementById('city')?.value?.trim();
-
-  if(!orgName || !contactName || !email){
-    if(msg) msg.textContent = 'Vul minimaal Bedrijfsnaam, Contactpersoon en E‑mail in.';
-    return;
+  function setActiveTab(tab){
+    if(tab === 'activate'){
+      tabActivate.classList.add('active');
+      tabRequest.classList.remove('active');
+      panelActivate.style.display = '';
+      panelRequest.style.display = 'none';
+    } else {
+      tabRequest.classList.add('active');
+      tabActivate.classList.remove('active');
+      panelRequest.style.display = '';
+      panelActivate.style.display = 'none';
+    }
   }
 
-  const subject = 'Aanvraag installatiecode – Fiets Service ID';
-  const bodyLines = [
-    'Nieuwe installatiecode-aanvraag',
-    '',
-    `Bedrijfsnaam: ${orgName}`,
-    `KVK: ${kvk||'-'}`,
-    `Contactpersoon: ${contactName}`,
-    `E-mail: ${email}`,
-    `Telefoon: ${phone||'-'}`,
-    `Adres: ${street||''}, ${zip||''} ${city||''}`,
-    '',
-    'Graag ontvang ik een activatiecode voor de Inruilwaarde-calculator.',
-    '',
-    `Verzonden vanuit de app op: ${new Date().toLocaleString('nl-NL')}`
-  ];
-  const mailto = `mailto:support@fietsserviceid.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-  window.location.href = mailto;
-  if(msg) msg.textContent = 'Je e‑mailprogramma is geopend met een voorgedefinieerde e‑mail (NAW-gegevens). Verstuur de e‑mail om de aanvraag af te ronden.';
-}
+  if (tabActivate && tabRequest){
+    tabActivate.addEventListener('click', function(){ setActiveTab('activate'); });
+    tabRequest.addEventListener('click', function(){ setActiveTab('request'); });
+  }
 
-async function activateCode(){
-  const code = document.getElementById('activationCodeInput')?.value?.trim();
-  const msg = document.getElementById('activateMsg');
-  if(msg) msg.textContent = '';
-  if(!code){ if(msg) msg.textContent = 'Vul een activatiecode in.'; return; }
-  try{
-    const res = await fetch(`${API_BASE}/activate`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ code })});
-    const json = await res.json();
-    if(!res.ok){ if(msg) msg.textContent = json?.message || 'Activatie mislukt.'; return; }
-    if(json?.token){ setToken(json.token); setBadge(`Licentie geactiveerd – geldig tot ${json.validUntil||''}`, true); showOverlay(false); }
-  }catch(e){ if(msg) msg.textContent = 'Netwerkfout. Probeer later opnieuw.'; }
-}
+  function updateBadgeActive(active){
+    if(!badge) return;
+    badge.textContent = active ? 'Licentie: actief' : 'Licentie: niet geactiveerd';
+  }
 
-window.addEventListener('DOMContentLoaded', ensureLicenseReady);
+  // getToken() wordt door app.js gebruikt (indien aanwezig)
+  window.getToken = function(){
+    try {
+      let t = (localStorage.getItem('fsid_license_token')||'').trim().toUpperCase();
+      if (window.validateFsIdCode && window.validateFsIdCode(t)) return t;
+      return '';
+    } catch(e){
+      return '';
+    }
+  };
+
+  function ensureActivation(){
+    const t = window.getToken();
+    const isValid = !!t;
+    updateBadgeActive(isValid);
+    if (overlay){ overlay.style.display = isValid ? 'none' : 'flex'; }
+  }
+
+  if (btnActivate && input){
+    btnActivate.addEventListener('click', function(){
+      const val = (input.value||'').trim().toUpperCase();
+      if (window.validateFsIdCode && window.validateFsIdCode(val)){
+        localStorage.setItem('fsid_license_token', val);
+        if (msgActivate){ msgActivate.textContent = 'Activatie geslaagd. Licentie geactiveerd.'; msgActivate.style.color = 'green'; }
+        ensureActivation();
+        // Herlaad data achter licentie-token
+        if (typeof load === 'function') { try { load(); } catch(e){} }
+      } else {
+        if (msgActivate){ msgActivate.textContent = 'Ongeldige activatiecode. Controleer je code of vraag een nieuwe aan.'; msgActivate.style.color = 'crimson'; }
+      }
+    });
+  }
+
+  if (btnRequest){
+    btnRequest.addEventListener('click', function(e){
+      e.preventDefault();
+      const org = ($('orgName')?.value)||'';
+      const kvk = ($('kvk')?.value)||'';
+      const cn = ($('contactName')?.value)||'';
+      const em = ($('email')?.value)||'';
+      const ph = ($('phone')?.value)||'';
+      const st = ($('street')?.value)||'';
+      const zp = ($('zip')?.value)||'';
+      const ct = ($('city')?.value)||'';
+      const subject = 'Aanvraag activatiecode – Fiets Service ID (jaarabonnement)';
+      const body = (
+        'Graag ontvang ik een activatiecode voor Fiets Service ID.\n' +
+        'Het betreft een jaarabonnement à €99,00 exclusief btw per jaar.\n\n' +
+        'NAW-gegevens:\n' +
+        'Bedrijfsnaam: ' + org + '\n' +
+        'KVK-nummer (optioneel): ' + kvk + '\n' +
+        'Contactpersoon: ' + cn + '\n' +
+        'E-mail: ' + em + '\n' +
+        'Telefoon: ' + ph + '\n' +
+        'Straat + nr: ' + st + '\n' +
+        'Postcode: ' + zp + '\n' +
+        'Plaats: ' + ct + '\n\n' +
+        'Alvast dank!'
+      );
+      const href = 'mailto:support@fietsserviceid.nl?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      try { window.location.href = href; } catch(e){}
+      if (msgRequest){ msgRequest.textContent = 'E-mailaanvraag geopend in je e‑mailprogramma.'; }
+    });
+  }
+
+  window.addEventListener('load', function(){
+    ensureActivation();
+    setActiveTab('activate');
+  });
+})();
