@@ -1,4 +1,3 @@
-
 let APPDATA = null;
 const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 
@@ -7,7 +6,9 @@ const MIN_INRUIL = null;        // bijv. 25
 const MAX_PCT_VAN_NIEUW = null; // bijv. 0.9
 
 async function load() {
-  const res = await fetch('./data.json');
+  // Data is beschermd achter licentie-token
+  const token = (typeof getToken==='function' ? getToken() : (localStorage.getItem('fsid_license_token')||''));
+  const res = await fetch('./api/data', { headers: { 'Authorization': 'Bearer ' + token } });
   APPDATA = await res.json();
   initUI();
 }
@@ -133,7 +134,7 @@ function calculate() {
   document.getElementById('resultValue').textContent = fmt.format(rounded);
   document.getElementById('resultCard').hidden = false;
 
-  // Factors tonen (2 decimalen waar zinvol)
+  // Factors tonen (2 decimalen)
   const nf2 = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 2 });
   document.getElementById('factorAge').textContent = nf2.format(ageFactor);
   document.getElementById('factorState').textContent = nf2.format(condFactor);
@@ -152,7 +153,6 @@ function calculate() {
 }
 
 function showOffer() {
-  // Laat de offerte op scherm staan en print direct
   document.getElementById('offerCard').scrollIntoView({behavior:'smooth'});
   window.print();
 }
