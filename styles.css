@@ -104,6 +104,91 @@ footer{padding:20px;text-align:center;color:var(--muted)}
   }
 }
 
+/* =========================================================
+   PRINT FIX — ALTIJD 1 A4-PAGINA
+   ========================================================= */
+@media print {
+
+  /* Gebruik A4 als canvas */
+  @page {
+    size: A4 portrait;
+    margin: 10mm !important;
+  }
+
+  /* Verberg onderdelen die niet op de offerte horen */
+  header,
+  nav,
+  #resultCard,
+  #calcBtn,
+  .no-print,
+  #codesCard,
+  #licenseFooter,
+  #licenseBanner {
+    display: none !important;
+  }
+
+  /* Body als flex container zodat we kunnen schalen */
+  body {
+    zoom: 1; /* standaard */
+    transform-origin: top left;
+  }
+
+  /* Offerte‑kaart moet 1 pagina vullen */
+  #offerCard {
+    display: block !important;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+
+  /* Tekst compacter maken */
+  #offerCard h2 {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  #offerCard .offer-grid,
+  #offerCard .kv {
+    row-gap: 4px !important;
+  }
+
+  #offerCard .offer-total {
+    font-size: 20px;
+    margin: 4px 0;
+  }
+
+  /* BELANGRIJK: automatische schaal naar ONE PAGE */
+  html {
+    transform: scale(1);
+  }
+
+  /* Dit stuk schaalt dynamisch zodat het binnen 1 A4 blijft */
+  /* Safari/iOS ondersteunt -webkit-print-color-adjust */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Maximale hoogte erzorgen; als groter dan A4 → automatisch schalen */
+  body {
+    max-height: 100%;
+  }
+}
+
+/* EXTRA: Schaal fix voor browsers met overflow (Chrome / Safari) */
+@media print {
+  body {
+    transform: scale(0.88); /* veilig default */
+  }
+  @supports (-webkit-touch-callout: none) {
+    /* iOS Safari */
+    body {
+      transform: scale(0.82); /* iOS nodig voor 1 A4 */
+    }
+  }
+}
+
 /* Iets breder (≤ 768px) ook enkelkoloms binnen licentiekaart */
 @media (max-width: 768px){
   .license-body{ grid-template-columns: 1fr; }
