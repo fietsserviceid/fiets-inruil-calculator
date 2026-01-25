@@ -1,0 +1,24 @@
+{
+  "price_eur_per_year": 99.0,
+  "version": 1,
+  "codes": [
+    {
+      "code": "FSID-DEMO-1234-5678",
+      "active": true,
+      "note": "DEMO",
+      "expires": null
+    },
+    {
+      "code": "FSID-ABCD-EFGH-JKLM",
+      "active": true,
+      "note": "Dealer X",
+      "expires": "2026-12-31"
+    },
+    {
+      "code": "FSID-NOPQ-RSTU-VWXY",
+      "active": false,
+      "note": "Ingetrokken",
+      "expires": null
+    }
+  ]
+}
