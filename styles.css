@@ -105,17 +105,16 @@ footer{padding:20px;text-align:center;color:var(--muted)}
 }
 
 /* =========================================================
-   PRINT FIX — ALTIJD 1 A4-PAGINA
+   PRINT FIX — ALTIJD 1 A4-PAGINA (KORTE, CONSISTENTE VERSIE)
    ========================================================= */
 @media print {
 
-  /* Gebruik A4 als canvas */
   @page {
     size: A4 portrait;
     margin: 10mm !important;
   }
 
-  /* Verberg onderdelen die niet op de offerte horen */
+  /* Verberg niet-relevante elementen */
   header,
   nav,
   #resultCard,
@@ -127,22 +126,30 @@ footer{padding:20px;text-align:center;color:var(--muted)}
     display: none !important;
   }
 
-  /* Body als flex container zodat we kunnen schalen */
   body {
-    zoom: 1; /* standaard */
+    background: #fff !important;
     transform-origin: top left;
+    transform: scale(0.88);   /* Chrome/Edge safe default */
+    max-height: 100%;
   }
 
-  /* Offerte‑kaart moet 1 pagina vullen */
+  /* iOS print scaling */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      transform: scale(0.82); /* iPhone/iPad schaal */
+    }
+  }
+
+  /* Offerte altijd binnen één pagina */
   #offerCard {
     display: block !important;
-    page-break-after: avoid;
-    page-break-before: avoid;
     page-break-inside: avoid;
+    page-break-before: avoid;
+    page-break-after: avoid;
     overflow: hidden;
   }
 
-  /* Tekst compacter maken */
+  /* Compacter maken voor print */
   #offerCard h2 {
     font-size: 20px;
     margin-bottom: 6px;
@@ -158,38 +165,9 @@ footer{padding:20px;text-align:center;color:var(--muted)}
     margin: 4px 0;
   }
 
-  /* BELANGRIJK: automatische schaal naar ONE PAGE */
-  html {
-    transform: scale(1);
-  }
-
-  /* Dit stuk schaalt dynamisch zodat het binnen 1 A4 blijft */
-  /* Safari/iOS ondersteunt -webkit-print-color-adjust */
+  /* Kleuren exact behouden (voor PDF) */
   * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-
-  /* Maximale hoogte erzorgen; als groter dan A4 → automatisch schalen */
-  body {
-    max-height: 100%;
-  }
-}
-
-/* EXTRA: Schaal fix voor browsers met overflow (Chrome / Safari) */
-@media print {
-  body {
-    transform: scale(0.88); /* veilig default */
-  }
-  @supports (-webkit-touch-callout: none) {
-    /* iOS Safari */
-    body {
-      transform: scale(0.82); /* iOS nodig voor 1 A4 */
-    }
-  }
-}
-
-/* Iets breder (≤ 768px) ook enkelkoloms binnen licentiekaart */
-@media (max-width: 768px){
-  .license-body{ grid-template-columns: 1fr; }
 }
