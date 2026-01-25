@@ -29,3 +29,4 @@ footer{padding:20px;text-align:center;color:var(--muted)}
 .license-panel{border:1px solid #e5e5e5;border-radius:10px;padding:16px}
 @media (max-width:820px){.license-body{grid-template-columns:1fr}}
 #licenseBanner{display:none;background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;padding:8px 12px;border-radius:8px;margin:10px 0}
+#licenseFooter { display: none !important; }
