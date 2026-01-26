@@ -337,3 +337,104 @@ footer{
     print-color-adjust:exact;
   }
 }
+
+/* ===== iOS overlay fix (fullscreen + scroll) ===== */
+
+/* 1) Fullscreen overlay die ook op iOS echt het hele scherm pakt */
+.license-overlay{
+  position: fixed;                 /* vast aan viewport */
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 99999;
+
+  /* iOS-veilig: geen 100vh, maar 100dvh en fallback */
+  height: 100dvh;                  /* iOS 15+ dynamic viewport */
+  min-height: -webkit-fill-available;
+
+  /* bestaande stijl uit jouw sheet */
+  background: #0b0c0dcc;
+  color: #fff;
+
+  /* centreren */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* veilige padding + notches */
+  padding:
+    max(24px, env(safe-area-inset-top))
+    max(24px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(24px, env(safe-area-inset-left));
+
+  /* belangrijk voor iOS: scroll in overlay toestaan */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* voorkom ‘achtergrond-swipe’ (pull-to-refresh/edge back) */
+  overscroll-behavior: contain;
+}
+
+/* 2) Kaart mag binnen overlay scrollen indien nodig */
+.license-card{
+  width: min(960px, 100%);
+  max-height: calc(100dvh - 2 * 24px);        /* nooit groter dan viewport */
+  min-height: auto;                            /* voorkom forceren */
+  overflow: hidden;                            /* randen strak */
+  display: flex;
+  flex-direction: column;
+
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.4);
+}
+
+/* Header blijft zichtbaar; body wordt scrollbaar */
+.license-card header{
+  padding: 16px 20px;
+  background: #0078D7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;                 /* vaste hoogte */
+}
+
+.license-body{
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1 1 auto;                 /* beschikbare ruimte benutten */
+  overflow: auto;                 /* inhoud binnen kaart kan scrollen */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOS fallback voor oudere builds die 100dvh niet kennen */
+@supports not (height: 100dvh){
+  .license-overlay{
+    /* CSS custom property via JS fallback (zie script) */
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+/* Mobile: één kolom + compacte paddings (jouw originele waarden, licht bijgewerkt) */
+@media (max-width: 480px){
+  .license-card header{ padding: 12px 14px; gap: 10px; }
+  .license-card header img{ max-height: 28px; width: auto; }
+  .license-body{
+    padding: 14px;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .license-panel{ padding: 12px; }
+  .license-panel input, .license-panel select{ font-size: 16px; }
+  .license-actions{ display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .license-actions .btn{ width: 100%; justify-content: center; }
+  #licenseBanner{ margin: 8px 0; }
+}
+
+/* Net iets breder ook enkelkoloms */
+@media (max-width: 820px){
+  .license-body{ grid-template-columns: 1fr; }
+}
