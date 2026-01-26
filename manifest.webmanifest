@@ -3,7 +3,7 @@
   "name": "Inruilwaarde-calculator",
   "short_name": "Inruilwaarde",
   "description": "Fiets Service ID — Inruilwaarde-calculator",
-  "id": "/fiets-inruil-calculator/",                // helpt App ID bepalen
+  "id": "/fiets-inruil-calculator/",
   "start_url": "/fiets-inruil-calculator/",
   "scope": "/fiets-inruil-calculator/",
   "display": "standalone",
