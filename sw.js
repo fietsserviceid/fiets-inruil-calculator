@@ -1,5 +1,5 @@
-// Service worker v7.5 — netwerk-eerst voor codes.json en betere fallbacks
-const CACHE_NAME = 'fiets-inruil-cache-v7.5';
+// Service worker v7.6 — netwerk-eerst voor codes.json en betere fallbacks
+const CACHE_NAME = 'fiets-inruil-cache-v7.6';
 const ASSETS = [
   './index.html', './styles.css', './app.js', './data.json',
   './manifest.webmanifest', './favicon.ico', './logofietsserviceidtransparant-ezgif.com-resize.png',
