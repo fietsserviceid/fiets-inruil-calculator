@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -7,18 +6,18 @@
   <title>Inruilwaarde Fietsen</title>
 
   <!-- PWA -->
-  ./manifest.webmanifest
+  <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#0078D7">
-  icon-192.png
+  <link rel="apple-touch-icon" href="icon-192.png">
 
   <!-- Favicon / styles -->
-  favicon.ico
-  ./styles.css
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <header>
     <div class="hdr-left">
-      logofietsserviceidtransparant-ezgif.com-resize.png
+      <img src="logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID">
       <h1>Inruilwaarde‑calculator</h1>
     </div>
     <div class="hdr-right">
@@ -112,7 +111,7 @@
   <div id="licenseGate" class="license-overlay" hidden>
     <div class="license-card" role="dialog" aria-labelledby="licenseTitle" aria-modal="true">
       <header>
-        logofietsserviceidtransparant-ezgif.com-resize.png
+        <img src="logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID">
         <div>
           <h2 id="licenseTitle" style="margin:0">Licentie vereist</h2>
           <div class="small" id="licenseSubtitle">
@@ -151,10 +150,12 @@
           </div>
           <div class="row">
             <div><label>KvK-nummer (optioneel)</label><input id="licKvK" placeholder="KvK"></div>
-            <div><label>BTW-nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></input></div>
+            <div><label>BTW-nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></div>
           </div>
           <div class="license-actions">
-            mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20IDAanvraag e‑mail opstellen</a>
+            <a class="btn" id="requestLicBtn"
+               href="mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20ID"
+               rel="noreferrer noopener external" target="_self">Aanvraag e‑mail opstellen</a>
             <button class="btn secondary" id="saveDraftBtn" type="button">Gegevens onthouden</button>
           </div>
           <p class="small muted">
@@ -166,10 +167,9 @@
     </div>
   </div>
 
-  </app.js</script>
+  <script src="./app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      // Zorgt voor juiste scope op GitHub Pages submap
       navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.error);
     }
   </script>

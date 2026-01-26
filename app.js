@@ -1,4 +1,3 @@
-
 // ==============================
 //  Fiets Inruil Calculator - app.js
 //  Versie: 8.0 — 2026-01-26
@@ -23,8 +22,7 @@ async function fetchJSON(url) {
 async function fetchLicenseList() { return fetchJSON(CODES_SOURCE); }
 
 function saveLocalLicense(licCode, months = 12) {
-  const now = new Date();
-  const expires = new Date(now);
+  const now = new Date(); const expires = new Date(now);
   expires.setMonth(expires.getMonth() + months);
   const payload = { code: licCode, activatedAt: now.toISOString(), expiresAt: expires.toISOString() };
   localStorage.setItem(LIC_STORAGE_KEY, JSON.stringify(payload));
@@ -36,10 +34,7 @@ function getLocalLicense() {
     const raw = localStorage.getItem(LIC_STORAGE_KEY);
     if (!raw) return null;
     const lic = JSON.parse(raw);
-    if (new Date(lic.expiresAt) < new Date()) {
-      localStorage.removeItem(LIC_STORAGE_KEY);
-      return null;
-    }
+    if (new Date(lic.expiresAt) < new Date()) { localStorage.removeItem(LIC_STORAGE_KEY); return null; }
     return lic;
   } catch { return null; }
 }
@@ -131,7 +126,6 @@ function recalc() {
   let value = refPrice * ageFactor * stateFactor * brandFactor * accuFactor;
   value = Math.max(0, Math.round(value));
 
-  // UI
   document.getElementById('resultValue').textContent = fmtEUR(value);
   document.getElementById('factorAge').textContent   = ageFactor.toFixed(2);
   document.getElementById('factorState').textContent = stateFactor.toFixed(2);
@@ -186,7 +180,6 @@ async function initData() {
 
 // ====== Licentie UI Bindings ======
 function bindLicenseUI() {
-  // Support beide id-varianten die je gebruikt(e): activateLicBtn/licActivateBtn, pasteLicBtn/licPasteBtn
   const actBtn   = document.getElementById('activateLicBtn') || document.getElementById('licActivateBtn');
   const pasteBtn = document.getElementById('pasteLicBtn')    || document.getElementById('licPasteBtn');
   const input    = document.getElementById('licCodeInput');
@@ -206,13 +199,14 @@ function bindLicenseUI() {
   setVh(); window.addEventListener('resize', setVh); window.addEventListener('orientationchange', setVh);
 })();
 
-// ====== PWA Install Button Manager (PC/Android prompt; iOS instructie) ======
+// ====== PWA Install Button Manager ======
 (function installButtonManager(){
   const installBtn = document.getElementById('installBtn');
   const banner     = document.getElementById('licenseBanner');
   let deferredPrompt = null;
 
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
   function isStandalone() {
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
@@ -220,20 +214,17 @@ function bindLicenseUI() {
   function showInstall(){ if (installBtn) installBtn.hidden = false; }
 
   function updateInstallVisibility() {
-    // Verberg knop als app al geïnstalleerd draait (PC/iOS/Android) of eerder is geïnstalleerd
     if (isStandalone() || localStorage.getItem('pwaInstalled') === '1') {
       hideInstall();
       return;
     }
     if (isIOS) {
-      // iOS: geen prompt — toon een duidelijke instructie
       if (banner) {
         banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.';
         banner.style.display = 'block';
       }
-      hideInstall(); // geen knop nodig; iOS heeft geen prompt
+      hideInstall();
     } else {
-      // Chromium: knop alleen tonen als prompt-event aanwezig is
       if (deferredPrompt) showInstall(); else hideInstall();
     }
   }
@@ -248,7 +239,7 @@ function bindLicenseUI() {
     if (!deferredPrompt) return;
     try {
       await deferredPrompt.prompt();
-      await deferredPrompt.userChoice; // outcome: accepted/dismissed
+      await deferredPrompt.userChoice;
     } catch {}
     deferredPrompt = null;
     updateInstallVisibility();
