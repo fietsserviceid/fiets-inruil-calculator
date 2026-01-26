@@ -5,7 +5,7 @@
     {
       "code": "FSID-DEMO-1234-5678",
       "active": true,
-      "note": "DEMO",
+      "note": "Martin van der Wel Tweewielers",
       "expires": null,
       "issued_to": null,
       "issued_at": null
@@ -20,8 +20,8 @@
     },
     {
       "code": "FSID-NOPQ-RSTU-VWXY",
-      "active": false,
-      "note": "Ingetrokken",
+      "active": true,
+      "note": "PROD",
       "expires": null,
       "issued_to": null,
       "issued_at": null
