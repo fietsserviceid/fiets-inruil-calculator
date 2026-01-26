@@ -22,3 +22,79 @@ function recalc(){ if(!DATA) return; const typeSel=document.getElementById('type
 async function initData(){ DATA=await fetchJSON('./data.json'); const typeSel=document.getElementById('typeSelect'); const brandSel=document.getElementById('brandSelect'); const stateSel=document.getElementById('stateSelect'); const accuStateSel=document.getElementById('accuStateSelect'); const hasAccuSel=document.getElementById('hasAccuSelect'); const refHint=document.getElementById('refPriceHint'); const accuWrap=document.getElementById('accuStateWrap'); populateSelect(typeSel, DATA.types.map(t=>t.type)); populateSelect(stateSel, Object.keys(DATA.cond_factors)); populateSelect(accuStateSel, Object.keys(DATA.accu_state_factors)); function updateTypeDependent(){ const t=DATA.types.find(x=>x.type===typeSel.value); const override=hasAccuSel.value; const hasAccu=effectiveHasAccu(t, override); const brandsForType=Object.keys(DATA.brands[typeSel.value]||{Overig:1}); populateSelect(brandSel, brandsForType); refHint.textContent='Referentieprijs voor '+typeSel.value+': '+fmtEUR(t?.ref_price||0); accuWrap.style.display=hasAccu?'block':'none'; } typeSel.addEventListener('change', updateTypeDependent); hasAccuSel.addEventListener('change', updateTypeDependent); updateTypeDependent(); document.getElementById('calcBtn').addEventListener('click', recalc); document.getElementById('printOfferBtn').addEventListener('click', ()=>window.print()); document.getElementById('year').textContent=new Date().getFullYear(); }
 let deferredPrompt=null; window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; const btn=document.getElementById('installBtn'); btn.hidden=false; btn.onclick=async()=>{ btn.hidden=true; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; }; });
 window.addEventListener('DOMContentLoaded', async ()=>{ try{ const list=await fetchLicenseList(); const price=(list.price_eur_per_year??99).toFixed(2); const priceHeader=document.getElementById('licensePriceHeader'); const priceBody=document.getElementById('licensePriceBody'); if(priceHeader) priceHeader.textContent=price; if(priceBody) priceBody.textContent=price; }catch{} const lic=getLocalLicense(); const gateEl=document.getElementById('licenseGate'); const banner=document.getElementById('licenseBanner'); const footer=document.getElementById('licenseFooter'); if(!lic){ gateEl.hidden=false; banner.textContent='Licentie vereist voor gebruik.'; banner.style.display='block'; footer.textContent=''; } else { closeLicenseGate(); } await initData(); });
+
+<script>
+/**
+ * PWA Install Button Manager
+ * - Verbergt de knop als de app al geïnstalleerd is (standalone of eerder geïnstalleerd)
+ * - Toont de knop alleen wanneer 'beforeinstallprompt' beschikbaar is (Android/Chrome/Edge)
+ * - iOS: geen prompt; knop verdwijnt zodra app als standalone draait (toegevoegd aan beginscherm)
+ */
+(function () {
+  const installBtn = document.getElementById('installBtn');
+  let deferredPrompt = null;
+
+  // Is de app standalone (PWA‑modus)?
+  function isStandalone() {
+    return window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true; // iOS Safari
+  }
+
+  // Toon/verberg de knop afhankelijk van status en platform
+  function updateInstallVisibility() {
+    if (!installBtn) return;
+
+    // Als app al geïnstalleerd is of standalone draait → verberg
+    if (isStandalone() || localStorage.getItem('pwaInstalled') === '1') {
+      installBtn.hidden = true;
+      return;
+    }
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+    // Android/Chrome/Edge: alleen tonen met echte prompt (deferredPrompt)
+    // iOS: géén prompt; je kunt hier iOS‑instructies tonen i.p.v. knop,
+    // maar in deze patch verbergen we de knop als er geen prompt is.
+    installBtn.hidden = (!isIOS && !deferredPrompt);
+  }
+
+  // Wordt afgevuurd op Android/Chrome/Edge wanneer installeren mogelijk is
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();            // we beheren de prompt zelf
+    deferredPrompt = e;            // bewaar de prompt
+    updateInstallVisibility();     // knop tonen
+  });
+
+  // Klik op “Installeer app”
+  installBtn?.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+      // iOS komt hier uit; optioneel: open instructie‑overlay.
+      return;
+    }
+    deferredPrompt.prompt();
+    try {
+      const { outcome } = await deferredPrompt.userChoice;
+      // outcome = 'accepted' | 'dismissed'
+    } catch (_) { /* negeer */ }
+    deferredPrompt = null;
+    updateInstallVisibility();
+  });
+
+  // Succesvolle installatie (Chrome/Edge/Android)
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwaInstalled', '1');
+    deferredPrompt = null;
+    updateInstallVisibility();
+  });
+
+  // Init + her‑evalueren bij terugkeren naar tab
+  document.addEventListener('DOMContentLoaded', updateInstallVisibility);
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') updateInstallVisibility();
+  });
+
+  // iOS “toegevoegd aan beginscherm” detectie duurt soms een lifecycle;
+  // we checken nogmaals vlak na load.
+  window.setTimeout(updateInstallVisibility, 1500);
+})();
+</script>
