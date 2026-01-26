@@ -1,6 +1,6 @@
 
-// Service Worker v7.8 – PWA scope voor GitHub Pages submap
-const CACHE_NAME = 'fiets-inruil-cache-v7.8';
+// Service Worker v8.0 – PWA scope voor GitHub Pages submap
+const CACHE_NAME = 'fiets-inruil-cache-v8.0';
 
 // Alles wat je offline wilt hebben
 const ASSETS = [
