@@ -1,19 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Inruilwaarde Fietsen</title>
-  <!-- PWA + favicon -->
-  <link rel="manifest" href="./manifest.webmanifest">
+
+  <!-- PWA -->
+  ./manifest.webmanifest
   <meta name="theme-color" content="#0078D7">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="./styles.css">
+  icon-192.png
+
+  <!-- Favicon / styles -->
+  favicon.ico
+  ./styles.css
 </head>
 <body>
   <header>
     <div class="hdr-left">
-      <img src="logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID">
+      logofietsserviceidtransparant-ezgif.com-resize.png
       <h1>Inruilwaarde‑calculator</h1>
     </div>
     <div class="hdr-right">
@@ -90,8 +95,8 @@
         </p>
         <div class="kv"><div>Datum:</div><div id="offerDate"></div></div>
         <div class="signatures">
-          <div>Handtekening klant: ___________________________</div>
-          <div>Handtekening dealer: __________________________</div>
+          <div>Handtekening klant: ____________________________</div>
+          <div>Handtekening dealer: ____________________________</div>
         </div>
         <div class="actions no-print"><button onclick="window.print()">Print / Exporteer PDF</button></div>
       </div>
@@ -107,86 +112,65 @@
   <div id="licenseGate" class="license-overlay" hidden>
     <div class="license-card" role="dialog" aria-labelledby="licenseTitle" aria-modal="true">
       <header>
-        <img src="logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID">
+        logofietsserviceidtransparant-ezgif.com-resize.png
         <div>
           <h2 id="licenseTitle" style="margin:0">Licentie vereist</h2>
-          <div class="small" id="licenseSubtitle">Activeer met installatiecode of vraag een code aan (€ <span id="licensePriceHeader">99,00</span> p/j ex. btw).</div>
+          <div class="small" id="licenseSubtitle">
+            Activeer met installatiecode of vraag een code aan (€ <span id="licensePriceHeader">99,00</span> p/j ex. btw).
+          </div>
         </div>
       </header>
+
       <div class="license-body">
         <div class="license-panel">
           <h3>Ik heb een installatiecode</h3>
           <label>Installatiecode</label>
           <input id="licCodeInput" placeholder="bijv. FSID-ABCD-EFGH-JKLM" autocomplete="one-time-code">
           <div class="license-actions">
-            <button class="btn" id="activateLicBtn" onclick="activateLicenseFromInput()">Activeer</button>
-            <button class="btn secondary" id="pasteLicBtn" type="button" onclick="pasteFromClipboard()">Plakken</button>
+            <button class="btn" id="activateLicBtn" type="button">Activeer</button>
+            <button class="btn secondary" id="pasteLicBtn" type="button">Plakken</button>
           </div>
           <p class="small muted">Na activatie is de licentie 12 maanden geldig op dit apparaat (PWA).</p>
           <div id="licMsg" class="small"></div>
         </div>
+
         <div class="license-panel">
           <h3>Geen code? Vraag er één aan</h3>
           <div class="row">
-            <div>
-              <label>Bedrijfsnaam</label>
-              <input id="licBedrijfsnaam" placeholder="Uw bedrijfsnaam">
-            </div>
-            <div>
-              <label>Contactpersoon</label>
-              <input id="licContact" placeholder="Naam contactpersoon">
-            </div>
+            <div><label>Bedrijfsnaam</label><input id="licBedrijfsnaam" placeholder="Uw bedrijfsnaam"></div>
+            <div><label>Contactpersoon</label><input id="licContact" placeholder="Naam contactpersoon"></div>
           </div>
           <div class="row">
-            <div>
-              <label>E‑mail</label>
-              <input id="licEmail" type="email" placeholder="naam@bedrijf.nl">
-            </div>
-            <div>
-              <label>Telefoon</label>
-              <input id="licTel" type="tel" placeholder="06…">
-            </div>
+            <div><label>E‑mail</label><input id="licEmail" type="email" placeholder="naam@bedrijf.nl"></div>
+            <div><label>Telefoon</label><input id="licTel" type="tel" placeholder="06…"></div>
           </div>
-          <label>Adres</label>
-          <input id="licAdres" placeholder="Straat en huisnummer">
+          <label>Adres</label><input id="licAdres" placeholder="Straat en huisnummer">
           <div class="row">
-            <div>
-              <label>Postcode</label>
-              <input id="licPostcode" placeholder="1234 AB">
-            </div>
-            <div>
-              <label>Plaats</label>
-              <input id="licPlaats" placeholder="Plaats">
-            </div>
+            <div><label>Postcode</label><input id="licPostcode" placeholder="1234 AB"></div>
+            <div><label>Plaats</label><input id="licPlaats" placeholder="Plaats"></div>
           </div>
           <div class="row">
-            <div>
-              <label>KvK-nummer (optioneel)</label>
-              <input id="licKvK" placeholder="KvK">
-            </div>
-            <div>
-              <label>BTW-nummer (optioneel)</label>
-              <input id="licBTW" placeholder="BTW">
-            </div>
+            <div><label>KvK-nummer (optioneel)</label><input id="licKvK" placeholder="KvK"></div>
+            <div><label>BTW-nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></input></div>
           </div>
           <div class="license-actions">
-            <a class="btn" id="requestLicBtn"
-               href="mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20ID"
-               rel="noreferrer noopener external" target="_self">Aanvraag e‑mail opstellen</a>
+            mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20IDAanvraag e‑mail opstellen</a>
             <button class="btn secondary" id="saveDraftBtn" type="button">Gegevens onthouden</button>
           </div>
-          <p class="small muted">We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie (€ <span id="licensePriceBody">99,00</span> ex. btw).</p>
+          <p class="small muted">
+            We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie
+            (€ <span id="licensePriceBody">99,00</span> ex. btw).
+          </p>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="./app.js"></script>
+  </app.js</script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
+      // Zorgt voor juiste scope op GitHub Pages submap
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.error);
     }
   </script>
 </body>
