@@ -13,8 +13,8 @@
     {
       "code": "FSID-ABCD-EFGH-JKLM",
       "active": true,
-      "note": "Dealer X",
-      "expires": "2026-12-31",
+      "note": "Leo Smit Tweewielers",
+      "expires": null,
       "issued_to": null,
       "issued_at": null
     },
