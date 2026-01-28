@@ -1,40 +1,73 @@
+// Service Worker v8.0 – PWA scope voor GitHub Pages submap
+const CACHE_NAME = 'fiets-inruil-cache-v8.0';
 
-const CACHE = 'inruilcalc-v9';
-const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/styles.css',
-  '/app.js',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/favicon.ico',
-  '/logofietsserviceidtransparant-ezgif.com-resize.png'
+const ASSETS = [
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './data.json',
+  './manifest.webmanifest',
+  './favicon.ico',
+  './logofietsserviceidtransparant-ezgif.com-resize.png',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(PRECACHE_URLS))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(ASSETS.map(async (url) => {
+      try {
+        const resp = await fetch(url, { cache: 'no-cache' });
+        if (resp && resp.ok) await cache.put(url, resp.clone());
+      } catch {}
+    }));
+  })());
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req).catch(() => caches.match('/index.html'))
-    );
+  const url = new URL(req.url);
+
+  if (url.pathname.endsWith('/data.json') || url.pathname.endsWith('/codes.json')) {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: 'no-store' });
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(req, fresh.clone());
+        return fresh;
+      } catch {
+        const cached = await caches.match(req);
+        return cached || new Response('[]', { headers: { 'Content-Type': 'application/json' } });
+      }
+    })());
     return;
   }
-  event.respondWith(
-    caches.match(req).then(cached => cached || fetch(req))
-  );
+
+  if (req.mode === 'navigate') {
+    event.respondWith((async () => {
+      try { return await fetch(req); }
+      catch { return (await caches.match('./index.html')) || new Response('', { status: 503 }); }
+    })());
+    return;
+  }
+
+  event.respondWith((async () => {
+    const cached = await caches.match(req);
+    const fetching = fetch(req).then(async (resp) => {
+      try { const cache = await caches.open(CACHE_NAME); cache.put(req, resp.clone()); } catch {}
+      return resp;
+    }).catch(() => cached);
+    return cached || fetching;
+  })());
 });
