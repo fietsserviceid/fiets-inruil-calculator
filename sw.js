@@ -1,45 +1,40 @@
 
-// Service Worker v9.2 – root scope met 'zoals-het-was' gedrag voor codes/data
-const CACHE_NAME = 'fiets-inruil-cache-v9.2';
-const ASSETS = [
-  '/', '/index.html', '/styles.css', '/app.js',
-  '/manifest.webmanifest', '/favicon.ico',
-  '/logofietsserviceidtransparant-ezgif.com-resize.png',
-  '/icon-192.png', '/icon-512.png',
-  '/data.json'
+const CACHE = 'inruilcalc-v9';
+const PRECACHE_URLS = [
+  '/',
+  '/index.html',
+  '/manifest.webmanifest',
+  '/styles.css',
+  '/app.js',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/favicon.ico',
+  '/logofietsserviceidtransparant-ezgif.com-resize.png'
 ];
-async function safePut(cache, req, resp) {
-  try {
-    const sameOrigin = new URL(req.url).origin === self.location.origin;
-    if (resp && resp.ok && sameOrigin) await cache.put(req, resp.clone());
-  } catch {}
-}
+
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil((async () => { const cache = await caches.open(CACHE_NAME); await cache.addAll(ASSETS); })());
+  event.waitUntil(
+    caches.open(CACHE).then(cache => cache.addAll(PRECACHE_URLS))
+  );
 });
+
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => { const keys = await caches.keys(); await Promise.all(keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null))); await self.clients.claim(); })());
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+  );
+  self.clients.claim();
 });
+
 self.addEventListener('fetch', (event) => {
-  const req = event.request; const url = new URL(req.url);
-  if (url.pathname.endsWith('/codes.json') || url.pathname.endsWith('/data.json')) {
-    event.respondWith((async () => {
-      try {
-        const fresh = await fetch(req, { cache: 'no-store' });
-        const cache = await caches.open(CACHE_NAME);
-        await safePut(cache, req, fresh);
-        return fresh;
-      } catch {
-        const cached = await caches.match(req);
-        return cached || new Response('[]', { headers: { 'Content-Type': 'application/json' } });
-      }
-    })());
-    return;
-  }
+  const req = event.request;
   if (req.mode === 'navigate') {
-    event.respondWith((async () => { try { return await fetch(req); } catch { return (await caches.match('/index.html')) || new Response('', { status: 503 }); } })());
+    event.respondWith(
+      fetch(req).catch(() => caches.match('/index.html'))
+    );
     return;
   }
-  event.respondWith((async () => { const cached = await caches.match(req); const fetching = fetch(req).then(async (resp) => { const cache = await caches.open(CACHE_NAME); await safePut(cache, req, resp); return resp; }).catch(() => cached); return cached || fetching; })());
+  event.respondWith(
+    caches.match(req).then(cached => cached || fetch(req))
+  );
 });
