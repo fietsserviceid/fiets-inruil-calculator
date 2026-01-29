@@ -429,3 +429,13 @@ footer{
   color: #fff !important;
   opacity: 1;
 }
+/* Failsafe: als de knop hidden is, moet hij altijd weg zijn */
+#installBtn[hidden] { 
+  display: none !important; 
+}
+
+/* In de geïnstalleerde app (standalone) nooit de install-knop tonen */
+@media all and (display-mode: standalone) {
+  #installBtn { display: none !important; }
+}
+``
