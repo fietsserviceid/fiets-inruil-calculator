@@ -1,7 +1,7 @@
 // Fiets Inruil Calculator – app.js (km-stand + lokale bronnen, activatie ongewijzigd)
 const LIC_STORAGE_KEY = 'fsid_license_v1';
-const CODES_SOURCE = './codes.json';
-const DATA_SOURCE  = './data.json';
+const CODES_SOURCE = '/codes.json';
+const DATA_SOURCE  = '/data.json';
 
 const fmtEUR = (v) =>
   new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(v);
@@ -200,7 +200,6 @@ function bindLicenseUI() {
 }
 
 // PWA install‑hint beheer (ongewijzigd)
-// PWA install‑hint beheer (PC/Android + iOS) — knop verdwijnt na installatie
 (function installButtonManager(){
   const installBtn = document.getElementById('installBtn');
   const banner     = document.getElementById('licenseBanner');
@@ -217,13 +216,20 @@ function bindLicenseUI() {
   function showInstall(){ if (installBtn) installBtn.hidden = false; }
 
   function updateInstallVisibility(){
-    // Altijd verbergen als app al “standalone” draait of als we 'm al als geïnstalleerd markeren
-    if (isStandalone() || localStorage.getItem('pwaInstalled') === '1') {
+    // 1) Als we standalone draaien: altijd verbergen + markeer als geïnstalleerd
+    if (isStandalone()) {
+      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
       hideInstall();
       return;
     }
 
-    // iOS: geen beforeinstallprompt/appinstalled -> toon instructie, verberg knop
+    // 2) Als we al markeerden als geïnstalleerd: verbergen
+    if (localStorage.getItem('pwaInstalled') === '1') {
+      hideInstall();
+      return;
+    }
+
+    // 3) iOS: geen beforeinstallprompt/appinstalled -> toon instructie, verberg knop
     if (isIOS) {
       if (banner) {
         banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.';
@@ -233,50 +239,44 @@ function bindLicenseUI() {
       return;
     }
 
-    // Android/desktop (Chromium): knop alleen tonen als prompt beschikbaar is
+    // 4) Android/desktop (Chromium): knop alleen tonen als prompt beschikbaar is
     if (deferredPrompt) showInstall();
     else hideInstall();
   }
 
-  // Android/desktop (Chromium): “install prompt”
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     updateInstallVisibility();
   });
 
-  // Klik op install button -> prompt
   installBtn?.addEventListener('click', async () => {
     if (!deferredPrompt) return;
     try {
       await deferredPrompt.prompt();
       await deferredPrompt.userChoice;
-      // Extra zekerheid: markeer als geïnstalleerd
-      localStorage.setItem('pwaInstalled', '1');
+      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
     } catch {}
     deferredPrompt = null;
     updateInstallVisibility();
   });
 
-  // Wordt gefired op Android/desktop na installatie
   window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwaInstalled', '1');
+    try { localStorage.setItem('pwaInstalled', '1'); } catch {}
     deferredPrompt = null;
     updateInstallVisibility();
   });
 
-  // Belangrijk: ook bij terugkeren/heropenen opnieuw checken
   document.addEventListener('DOMContentLoaded', updateInstallVisibility);
   window.addEventListener('pageshow', updateInstallVisibility);
   window.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') updateInstallVisibility();
   });
 
-  // Kleine extra checks voor randgevallen
   setTimeout(updateInstallVisibility, 500);
   setTimeout(updateInstallVisibility, 1500);
 })();
-``
+
 // Opstart
 window.addEventListener('DOMContentLoaded', async () => {
   // Prijs uit codes.json (ongewijzigd gedrag)
