@@ -199,7 +199,7 @@ function bindLicenseUI() {
   input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); activateLicenseFromInput(); } });
 }
 
-// PWA install‑hint beheer (ongewijzigd)
+// PWA install-knop beheer — verberg in PWA, toon alleen wanneer installprompt beschikbaar is
 (function installButtonManager(){
   const installBtn = document.getElementById('installBtn');
   const banner     = document.getElementById('licenseBanner');
@@ -216,20 +216,13 @@ function bindLicenseUI() {
   function showInstall(){ if (installBtn) installBtn.hidden = false; }
 
   function updateInstallVisibility(){
-    // 1) Als we standalone draaien: altijd verbergen + markeer als geïnstalleerd
+    // 1) In de PWA zelf: knop altijd weg
     if (isStandalone()) {
-      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
       hideInstall();
       return;
     }
 
-    // 2) Als we al markeerden als geïnstalleerd: verbergen
-    if (localStorage.getItem('pwaInstalled') === '1') {
-      hideInstall();
-      return;
-    }
-
-    // 3) iOS: geen beforeinstallprompt/appinstalled -> toon instructie, verberg knop
+    // 2) iOS in browser: geen echte installprompt -> géén knop, alleen uitleg
     if (isIOS) {
       if (banner) {
         banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.';
@@ -239,7 +232,7 @@ function bindLicenseUI() {
       return;
     }
 
-    // 4) Android/desktop (Chromium): knop alleen tonen als prompt beschikbaar is
+    // 3) Desktop/Android: toon knop alleen als prompt beschikbaar is
     if (deferredPrompt) showInstall();
     else hideInstall();
   }
@@ -254,15 +247,18 @@ function bindLicenseUI() {
     if (!deferredPrompt) return;
     try {
       await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
+      const choice = await deferredPrompt.userChoice;
+      // Alleen markeren als geïnstalleerd wanneer user accepteert
+      if (choice && choice.outcome === 'accepted') {
+        localStorage.setItem('pwaInstalled', '1');
+      }
     } catch {}
     deferredPrompt = null;
     updateInstallVisibility();
   });
 
   window.addEventListener('appinstalled', () => {
-    try { localStorage.setItem('pwaInstalled', '1'); } catch {}
+    localStorage.setItem('pwaInstalled', '1');
     deferredPrompt = null;
     updateInstallVisibility();
   });
@@ -273,8 +269,8 @@ function bindLicenseUI() {
     if (document.visibilityState === 'visible') updateInstallVisibility();
   });
 
-  setTimeout(updateInstallVisibility, 500);
-  setTimeout(updateInstallVisibility, 1500);
+  // direct uitvoeren
+  updateInstallVisibility();
 })();
 
 // Opstart
