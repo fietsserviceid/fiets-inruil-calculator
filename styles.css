@@ -423,3 +423,9 @@ footer{
 @media (max-width: 820px){
   .license-body{ grid-template-columns: 1fr; }
 }
+/* Licentie header: subtitle altijd wit (incl. prijs) */
+.license-card header #licenseSubtitle,
+.license-card header #licenseSubtitle span {
+  color: #fff !important;
+  opacity: 1;
+}
