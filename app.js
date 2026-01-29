@@ -200,33 +200,83 @@ function bindLicenseUI() {
 }
 
 // PWA install‑hint beheer (ongewijzigd)
+// PWA install‑hint beheer (PC/Android + iOS) — knop verdwijnt na installatie
 (function installButtonManager(){
   const installBtn = document.getElementById('installBtn');
-  const banner = document.getElementById('licenseBanner');
+  const banner     = document.getElementById('licenseBanner');
   let deferredPrompt = null;
+
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  function isStandalone() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
+
+  function isStandalone() {
+    return window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true; // iOS
+  }
+
   function hideInstall(){ if (installBtn) installBtn.hidden = true; }
   function showInstall(){ if (installBtn) installBtn.hidden = false; }
+
   function updateInstallVisibility(){
-    if (isStandalone() || localStorage.getItem('pwaInstalled') === '1') { hideInstall(); return; }
-    if (isIOS) {
-      if (banner) { banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.'; banner.style.display = 'block'; }
+    // Altijd verbergen als app al “standalone” draait of als we 'm al als geïnstalleerd markeren
+    if (isStandalone() || localStorage.getItem('pwaInstalled') === '1') {
       hideInstall();
-    } else { if (deferredPrompt) showInstall(); else hideInstall(); }
+      return;
+    }
+
+    // iOS: geen beforeinstallprompt/appinstalled -> toon instructie, verberg knop
+    if (isIOS) {
+      if (banner) {
+        banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.';
+        banner.style.display = 'block';
+      }
+      hideInstall();
+      return;
+    }
+
+    // Android/desktop (Chromium): knop alleen tonen als prompt beschikbaar is
+    if (deferredPrompt) showInstall();
+    else hideInstall();
   }
-  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; updateInstallVisibility(); });
+
+  // Android/desktop (Chromium): “install prompt”
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    updateInstallVisibility();
+  });
+
+  // Klik op install button -> prompt
   installBtn?.addEventListener('click', async () => {
     if (!deferredPrompt) return;
-    try { await deferredPrompt.prompt(); await deferredPrompt.userChoice; } catch {}
-    deferredPrompt = null; updateInstallVisibility();
+    try {
+      await deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      // Extra zekerheid: markeer als geïnstalleerd
+      localStorage.setItem('pwaInstalled', '1');
+    } catch {}
+    deferredPrompt = null;
+    updateInstallVisibility();
   });
-  window.addEventListener('appinstalled', () => { localStorage.setItem('pwaInstalled', '1'); deferredPrompt = null; updateInstallVisibility(); });
-  document.addEventListener('DOMContentLoaded', updateInstallVisibility);
-  window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') updateInstallVisibility(); });
-  setTimeout(updateInstallVisibility, 1000);
-})();
 
+  // Wordt gefired op Android/desktop na installatie
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwaInstalled', '1');
+    deferredPrompt = null;
+    updateInstallVisibility();
+  });
+
+  // Belangrijk: ook bij terugkeren/heropenen opnieuw checken
+  document.addEventListener('DOMContentLoaded', updateInstallVisibility);
+  window.addEventListener('pageshow', updateInstallVisibility);
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') updateInstallVisibility();
+  });
+
+  // Kleine extra checks voor randgevallen
+  setTimeout(updateInstallVisibility, 500);
+  setTimeout(updateInstallVisibility, 1500);
+})();
+``
 // Opstart
 window.addEventListener('DOMContentLoaded', async () => {
   // Prijs uit codes.json (ongewijzigd gedrag)
