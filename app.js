@@ -215,14 +215,38 @@ function bindLicenseUI() {
   function hideInstall(){ if (installBtn) installBtn.hidden = true; }
   function showInstall(){ if (installBtn) installBtn.hidden = false; }
 
-  function updateInstallVisibility(){
-    // 1) In de PWA zelf: knop altijd weg
+  async function detectInstalledRelatedApps(){
+    try {
+      if (!navigator.getInstalledRelatedApps) return false;
+      const related = await navigator.getInstalledRelatedApps();
+      return Array.isArray(related) && related.length > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  async function updateInstallVisibility(){
+    // In de PWA zelf altijd weg
     if (isStandalone()) {
+      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
       hideInstall();
       return;
     }
 
-    // 2) iOS in browser: geen echte installprompt -> géén knop, alleen uitleg
+    // Als al geïnstalleerd gemarkeerd -> weg (ook in browser)
+    if (localStorage.getItem('pwaInstalled') === '1') {
+      hideInstall();
+      return;
+    }
+
+    // Extra detectie op Android/Chrome indien beschikbaar
+    if (await detectInstalledRelatedApps()) {
+      try { localStorage.setItem('pwaInstalled', '1'); } catch {}
+      hideInstall();
+      return;
+    }
+
+    // iOS: geen beforeinstallprompt -> toon instructie, verberg knop
     if (isIOS) {
       if (banner) {
         banner.innerHTML = 'Op iPhone: tik <strong>Deel</strong> ▸ <strong>Zet op beginscherm</strong>.';
@@ -232,7 +256,7 @@ function bindLicenseUI() {
       return;
     }
 
-    // 3) Desktop/Android: toon knop alleen als prompt beschikbaar is
+    // Desktop/Android: toon knop alleen als prompt beschikbaar is
     if (deferredPrompt) showInstall();
     else hideInstall();
   }
@@ -240,6 +264,7 @@ function bindLicenseUI() {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+    // async functie aanroepen
     updateInstallVisibility();
   });
 
@@ -248,28 +273,28 @@ function bindLicenseUI() {
     try {
       await deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
-      // Alleen markeren als geïnstalleerd wanneer user accepteert
       if (choice && choice.outcome === 'accepted') {
-        localStorage.setItem('pwaInstalled', '1');
+        try { localStorage.setItem('pwaInstalled', '1'); } catch {}
       }
     } catch {}
     deferredPrompt = null;
-    updateInstallVisibility();
+    await updateInstallVisibility();
   });
 
-  window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwaInstalled', '1');
+  window.addEventListener('appinstalled', async () => {
+    try { localStorage.setItem('pwaInstalled', '1'); } catch {}
     deferredPrompt = null;
-    updateInstallVisibility();
+    await updateInstallVisibility();
   });
 
-  document.addEventListener('DOMContentLoaded', updateInstallVisibility);
-  window.addEventListener('pageshow', updateInstallVisibility);
+  document.addEventListener('DOMContentLoaded', () => { updateInstallVisibility(); });
+  window.addEventListener('pageshow', () => { updateInstallVisibility(); });
   window.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') updateInstallVisibility();
   });
 
-  // direct uitvoeren
+  setTimeout(updateInstallVisibility, 500);
+  setTimeout(updateInstallVisibility, 1500);
   updateInstallVisibility();
 })();
 
