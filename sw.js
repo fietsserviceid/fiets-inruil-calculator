@@ -1,5 +1,5 @@
-// Service Worker v9.7 – root scope met 'zoals-het-was' gedrag voor codes/data
-const CACHE_NAME = 'fiets-inruil-cache-v9.7';
+// Service Worker v9.8 – root scope met 'zoals-het-was' gedrag voor codes/data
+const CACHE_NAME = 'fiets-inruil-cache-v9.8';
 const ASSETS = [
   '/', '/index.html', '/styles.css', '/app.js',
   '/manifest.webmanifest', '/favicon.ico',
