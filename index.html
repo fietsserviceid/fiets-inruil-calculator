@@ -169,17 +169,31 @@
         <!-- Panel: geen code, aanvraag -->
         <div class="license-panel">
           <h3>Geen code? Vraag er één aan</h3>
-          <!-- … (je formulier velden) … -->
-          <div class="license-actions">
-            <a class="btn" href="mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20ID">Aanvraag e‑mail opstellen</a>
-            <button class="btn secondary" id="saveDraftBtn" type="button">Gegevens onthouden</button>
-          </div>
-          <p class="small muted">We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie (€ <span id="licensePriceBody">99,00</span> ex. btw).</p>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="row">
+  <div><label>Bedrijfsnaam</label><input id="licBedrijfsnaam" placeholder="Uw bedrijfsnaam"></div>
+  <div><label>Contactpersoon</label><input id="licContact" placeholder="Naam contactpersoon"></div>
+</div>
 
+<div class="row">
+  <div><label>E‑mail</label><input id="licEmail" type="email" placeholder="naam@bedrijf.nl"></div>
+  <div><label>Telefoon</label><input id="licTel" type="tel" placeholder="06…"></div>
+</div>
+
+<label>Adres</label><input id="licAdres" placeholder="Straat en huisnummer">
+
+<div class="row">
+  <div><label>Postcode</label><input id="licPostcode" placeholder="1234 AB"></div>
+  <div><label>Plaats</label><input id="licPlaats" placeholder="Plaats"></div>
+</div>
+
+<div class="row">
+  <div><label>KvK‑nummer (optioneel)</label><input id="licKvK" placeholder="KvK"></div>
+  <div><label>BTW‑nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></div>
+</div>
+<p class="small muted">
+  We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie Max 10 apparaten
+  (€ <span id="licensePriceBody">99,00</span> ex. btw).
+</p>
   <!-- Scripts -->
   <script src="/app.js?v=9.4" defer></script>
   <script>
