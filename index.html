@@ -6,19 +6,15 @@
   <title>Inruilwaarde Fietsen</title>
 
   <!-- PWA -->
-  <link rel="manifest" href="/manifest.webmanifest">
+  /manifest.webmanifest
   <meta name="theme-color" content="#0078D7">
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="/styles.css?v=9.4">
+  <link rel="icon" type="image/png" sizes="192x192" sizes="512x512" <link rel="?v=9.6
 </head>
+
 <body>
   <header>
     <div class="hdr-left">
-      <img src="/logofietsserviceidtransparant-ezgif.com-resize.png" alt="Fiets Service ID" />
+      /logofietsserviceidtransparant-ezgif.com-resize.png
       <h1>Inruilwaarde‑calculator</h1>
     </div>
     <div class="hdr-right">
@@ -64,7 +60,7 @@
           <input id="priceInput" type="number" min="0" step="1" placeholder="Laat leeg voor referentieprijs" />
         </label>
 
-        <!-- ✅ Nieuw: Km-stand (alleen voor elektrische types) -->
+        <!-- ✅ Km-stand (alleen voor elektrische types) -->
         <label id="kmStandWrap">Km‑stand (alleen E‑bike/elektrische bakfiets)
           <input id="kmStandInput" type="number" min="0" max="30000" step="100" placeholder="bijv. 8000" />
         </label>
@@ -90,7 +86,6 @@
           <li>Conditiefactor: <span id="factorState"></span></li>
           <li>Accufactor: <span id="factorAccu"></span></li>
           <li>Merkfactor: <span id="factorBrand"></span></li>
-          <!-- ✅ Toegevoegd: kilometerfactor -->
           <li>Kilometerfactor (km‑stand): <span id="factorKmStand"></span></li>
         </ul>
       </details>
@@ -129,7 +124,9 @@
           <div>Handtekening dealer: _____________________________</div>
         </div>
 
-        <div class="actions no-print"><button onclick="window.print()">Print / Exporteer PDF</button></div>
+        <div class="actions no-print">
+          <button onclick="window.print()">Print / Exporteer PDF</button>
+        </div>
       </div>
     </section>
   </main>
@@ -143,11 +140,12 @@
   <div id="licenseGate" class="license-overlay" hidden>
     <div class="license-card" role="dialog" aria-labelledby="licenseTitle" aria-modal="true">
       <header>
-        <img src="/logofietsserviceidtransparant-ezgif.com-resize.png" alt="" />
-        <div>
-          <h2 id="licenseTitle" style="margin:0">Licentie vereist</h2>
+        <img src="/logofietsserviceidtransparant-ezgif.com-resize.png" alt=""       <h2 id="licenseTitle" style="margin:0">Licentie vereist</h2>
+
+          <!-- ✅ AANGEPAST: tekst + Max 10 apparaten -->
           <div class="small" id="licenseSubtitle">
-            Activeer met installatiecode of vraag een code aan (€ <span id="licensePriceHeader">99,00</span> p/j ex. btw).
+            Activeer met installatiecode of vraag een code aan – <strong>Max 10 apparaten</strong>
+            (€ <span id="licensePriceHeader">99,00</span> p/j ex. btw).
           </div>
         </div>
       </header>
@@ -169,33 +167,48 @@
         <!-- Panel: geen code, aanvraag -->
         <div class="license-panel">
           <h3>Geen code? Vraag er één aan</h3>
+
+          <!-- ✅ NAW velden terug (zoals je oude werkende versie) -->
           <div class="row">
-  <div><label>Bedrijfsnaam</label><input id="licBedrijfsnaam" placeholder="Uw bedrijfsnaam"></div>
-  <div><label>Contactpersoon</label><input id="licContact" placeholder="Naam contactpersoon"></div>
-</div>
+            <div><label>Bedrijfsnaam</label><input id="licBedrijfsnaam" placeholder="Uw bedrijfsnaam"></div>
+            <div><label>Contactpersoon</label><input id="licContact" placeholder="Naam contactpersoon"></div>
+          </div>
 
-<div class="row">
-  <div><label>E‑mail</label><input id="licEmail" type="email" placeholder="naam@bedrijf.nl"></div>
-  <div><label>Telefoon</label><input id="licTel" type="tel" placeholder="06…"></div>
-</div>
+          <div class="row">
+            <div><label>E‑mail</label><input id="licEmail" type="email" placeholder="naam@bedrijf.nl"></div>
+            <div><label>Telefoon</label><input id="licTel" type="tel" placeholder="06…"></div>
+          </div>
 
-<label>Adres</label><input id="licAdres" placeholder="Straat en huisnummer">
+          <label>Adres</label>
+          <input id="licAdres" placeholder="Straat en huisnummer">
 
-<div class="row">
-  <div><label>Postcode</label><input id="licPostcode" placeholder="1234 AB"></div>
-  <div><label>Plaats</label><input id="licPlaats" placeholder="Plaats"></div>
-</div>
+          <div class="row">
+            <div><label>Postcode</label><input id="licPostcode" placeholder="1234 AB"></div>
+            <div><label>Plaats</label><input id="licPlaats" placeholder="Plaats"></div>
+          </div>
 
-<div class="row">
-  <div><label>KvK‑nummer (optioneel)</label><input id="licKvK" placeholder="KvK"></div>
-  <div><label>BTW‑nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></div>
-</div>
-<p class="small muted">
-  We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie Max 10 apparaten
-  (€ <span id="licensePriceBody">99,00</span> ex. btw).
-</p>
+          <div class="row">
+            <div><label>KvK‑nummer (optioneel)</label><input id="licKvK" placeholder="KvK"></div>
+            <div><label>BTW‑nummer (optioneel)</label><input id="licBTW" placeholder="BTW"></div>
+          </div>
+
+          <div class="license-actions">
+            mailto:info@fietsserviceid.nl?subject=Aanvraag%20installatiecode%20%E2%80%94%20Fiets%20Service%20IDAanvraag e‑mail opstellen</a>
+            <button class="btn secondary" id="saveDraftBtn" type="button">Gegevens onthouden</button>
+          </div>
+
+          <!-- ✅ AANGEPAST: Max 10 apparaten -->
+          <p class="small muted">
+            We genereren een e‑mail met uw NAW‑gegevens en het verzoek om een 1‑jarige licentie <strong>Max 10 apparaten</strong>
+            (€ <span id="licensePriceBody">99,00</span> ex. btw).
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
-  <script src="/app.js?v=9.4" defer></script>
+  /app.js?v=9.6</script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(console.error);
@@ -204,10 +217,6 @@
       const y = document.getElementById('year');
       if (y) y.textContent = new Date().getFullYear();
     });
-    (function(){
-      function setVh(){ document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
-      setVh(); window.addEventListener('resize', setVh);
-    })();
   </script>
 </body>
 </html>
