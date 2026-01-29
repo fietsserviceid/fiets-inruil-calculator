@@ -1,6 +1,6 @@
 // Fiets Inruil Calculator – app.js (km-stand + lokale bronnen, activatie ongewijzigd)
 const LIC_STORAGE_KEY = 'fsid_license_v1';
-const CODES_SOURCE = '/codes.json';
+const CODES_SOURCE = './codes.json';
 const DATA_SOURCE  = '/data.json';
 
 const fmtEUR = (v) =>
