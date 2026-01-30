@@ -144,26 +144,16 @@ function recalc() {
 
   // (optioneel: velden voor offerte kunnen hier ook gezet worden)
   document.getElementById('resultCard').hidden = false;
-
-// v9.6 - superkleine fix: vul alleen het eindbedrag in de offerte
-const offerTotal = document.getElementById('offerTotal');
-if (offerTotal) offerTotal.textContent = fmtEUR(value);
-
-// v9.6 - aanvullende mini-fix: vul ook Type, Merk, Staat, Leeftijd en Km-stand in
-const offerType = document.getElementById('offerType');
-if (offerType) offerType.textContent = typeName ?? '';
-
-const offerBrand = document.getElementById('offerBrand');
-if (offerBrand) offerBrand.textContent = brandSel.value ?? '';
-
-const offerState = document.getElementById('offerState');
-if (offerState) offerState.textContent = stateSel.value ?? '';
-
-const offerAge = document.getElementById('offerAge');
-if (offerAge) offerAge.textContent = age + ' jaar';
-
-const offerKm = document.getElementById('offerKm');
-if (offerKm && kmStandInput) offerKm.textContent = kmStandInput.value || '';
+// v9.6 - fix: fill extra offerte fields including km-stand (formatted)
+const offerTotal = document.getElementById('offerTotal'); if (offerTotal) offerTotal.textContent = fmtEUR(value);
+const offerType = document.getElementById('offerType'); if (offerType) offerType.textContent = typeName ?? '';
+const offerBrand = document.getElementById('offerBrand'); if (offerBrand) offerBrand.textContent = brandSel.value ?? '';
+const offerState = document.getElementById('offerState'); if (offerState) offerState.textContent = stateSel.value ?? '';
+const offerAge = document.getElementById('offerAge'); if (offerAge) offerAge.textContent = age + ' jaar';
+const offerKm = document.getElementById('offerKm'); if (offerKm && kmStandInput) {
+  const kmVal = kmStandInput.value ? Number(kmStandInput.value) : 0;
+  offerKm.textContent = kmVal.toLocaleString('nl-NL') + ' km';
+}
 
 }
 
