@@ -103,7 +103,7 @@
           <div>Handtekening klant: _____________________________</div>
           <div>Handtekening dealer: _____________________________</div>
         </div>
-        <div class="actions no-print"><button onclick="window.print()">Print / Exporteer PDF</button></div>
+        <div class="actions no-print"><button onclick="window.print()">Print / Exporteer PDF</button><button id="downloadPdfBtn">Download PDF Offerte</button></div>
       </div>
     </section>
   </main>
@@ -186,5 +186,6 @@
       if (y) y.textContent = new Date().getFullYear();
     });
   </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>

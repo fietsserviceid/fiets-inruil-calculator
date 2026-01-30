@@ -337,3 +337,38 @@ window.addEventListener('DOMContentLoaded', async () => {
   bindLicenseUI();
   await initData();
 });
+
+
+// --- PDF Generator ---
+async function downloadOffertePDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'mm',format:'a4'});
+  const blue=[0,51,128];
+  doc.setFont('Helvetica','bold');doc.setFontSize(24);doc.setTextColor(...blue);
+  doc.text('Offerte – Inruilvoorstel',20,20);
+  doc.setDrawColor(...blue);doc.setLineWidth(1.5);doc.line(20,25,190,25);
+  doc.setFontSize(16);doc.text('Klant & Fietsgegevens',20,35);
+  doc.line(20,37,90,37);
+  const klant=document.getElementById('offerName').value||'';
+  const type=document.getElementById('offerType').textContent||'';
+  const merk=document.getElementById('offerBrand').textContent||'';
+  const staat=document.getElementById('offerState').textContent||'';
+  const leeftijd=document.getElementById('offerAge').textContent||'';
+  const km=document.getElementById('offerKm').textContent||'';
+  const prijs=document.getElementById('offerTotal').textContent||'';
+  let y=48;doc.setFont('Helvetica','');doc.setFontSize(12);
+  const fields=[["Naam klant:",klant],["Type fiets:",type],["Merk:",merk],["Staat:",staat],["Leeftijd:",leeftijd],["Km-stand:",km]];
+  fields.forEach(f=>{doc.text(f[0],20,y);doc.text(f[1],60,y);y+=10;});
+  doc.setFont('Helvetica','bold');doc.setFontSize(16);doc.setTextColor(...blue);
+  doc.text('Inruilprijs:',20,y);
+  doc.text(prijs,60,y);
+  doc.setTextColor(0,0,0);y+=15;
+  doc.setFontSize(10);
+  doc.text('Deze inruilwaarde is gebaseerd op type fiets, leeftijd, staat, km-stand en overige factoren.',20,y);
+  y+=20;doc.setFontSize(12);
+  doc.text('Handtekening klant:',20,y);doc.line(70,y+1,150,y+1);
+  y+=20;doc.text('Handtekening dealer:',20,y);doc.line(70,y+1,150,y+1);
+  y+=20;doc.text('Datum:',20,y);doc.line(40,y+1,90,y+1);
+  doc.save('Offerte-FietsServiceID.pdf');
+}
+document.getElementById('downloadPdfBtn')?.addEventListener('click',downloadOffertePDF);
