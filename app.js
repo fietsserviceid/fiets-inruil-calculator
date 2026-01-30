@@ -369,7 +369,7 @@ function downloadOffertePDF(){
   y+=20; doc.setFontSize(12);
   doc.text('Handtekening klant:',20,y); doc.setLineWidth(0.2); doc.line(70,y+1,150,y+1);
   y+=20; doc.text('Handtekening dealer:',20,y); doc.setLineWidth(0.2); doc.line(70,y+1,150,y+1);
-  y+=20; doc.text('Datum:',20,y); doc.setLineWidth(0.2); doc.line(40,y+1,90,y+1);
+  y+=20; doc.text('Datum:',20,y); doc.text(new Date().toLocaleDateString('nl-NL'), 40, y);
   doc.save('Offerte-FietsServiceID.pdf');
 }
 (function(){
