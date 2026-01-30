@@ -197,8 +197,18 @@ async function initData() {
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // (optioneel) printknop
-  const printBtn = document.getElementById('printOfferBtn');
-  if (printBtn) printBtn.addEventListener('click', () => window.print());
+const printBtn = document.getElementById('printOfferBtn');
+if (printBtn) printBtn.addEventListener('click', () => {
+  // Offerte opnieuw vullen (type/merk/staat/leeftijd/km/prijs)
+  recalc();
+
+  // Datum zetten (nl-NL formaat)
+  const d = document.getElementById('offerDate');
+  if (d) d.textContent = new Date().toLocaleDateString('nl-NL');
+
+  // Even laten tekenen in de DOM, dan printen
+  setTimeout(() => window.print(), 50);
+});
 }
 
 function bindLicenseUI() {
