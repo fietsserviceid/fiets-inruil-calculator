@@ -144,10 +144,12 @@ function recalc() {
 
   // (optioneel: velden voor offerte kunnen hier ook gezet worden)
   document.getElementById('resultCard').hidden = false;
+
 // v9.6 - superkleine fix: vul alleen het eindbedrag in de offerte
 const offerTotal = document.getElementById('offerTotal');
 if (offerTotal) offerTotal.textContent = fmtEUR(value);
-// v9.6 - aanvullende mini-fix: vul ook Type, Merk, Staat en Leeftijd in
+
+// v9.6 - aanvullende mini-fix: vul ook Type, Merk, Staat, Leeftijd en Km-stand in
 const offerType = document.getElementById('offerType');
 if (offerType) offerType.textContent = typeName ?? '';
 
@@ -160,10 +162,9 @@ if (offerState) offerState.textContent = stateSel.value ?? '';
 const offerAge = document.getElementById('offerAge');
 if (offerAge) offerAge.textContent = age + ' jaar';
 
-// Optioneel km-stand, maar alleen invullen als de klant het ziet in de offerte
 const offerKm = document.getElementById('offerKm');
-if (offerKm && kmStandInput) offerKm.textContent = kmStandInput.value;
-``
+if (offerKm && kmStandInput) offerKm.textContent = kmStandInput.value || '';
+
 }
 
 async function initData() {
