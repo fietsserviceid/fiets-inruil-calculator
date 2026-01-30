@@ -144,6 +144,10 @@ function recalc() {
 
   // (optioneel: velden voor offerte kunnen hier ook gezet worden)
   document.getElementById('resultCard').hidden = false;
+// v9.6 - superkleine fix: vul alleen het eindbedrag in de offerte
+const offerTotal = document.getElementById('offerTotal');
+if (offerTotal) offerTotal.textContent = fmtEUR(value);
+
 }
 
 async function initData() {
