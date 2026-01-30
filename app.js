@@ -150,8 +150,6 @@ const offerType = document.getElementById('offerType'); if (offerType) offerType
 const offerBrand = document.getElementById('offerBrand'); if (offerBrand) offerBrand.textContent = brandSel.value ?? '';
 const offerState = document.getElementById('offerState'); if (offerState) offerState.textContent = stateSel.value ?? '';
 const offerAge = document.getElementById('offerAge'); if (offerAge) offerAge.textContent = age + ' jaar';
-// v9.6 - km-stand zichtbaar alleen bij elektrische types
- (function(){ const offerKmEl=document.getElementById('offerKm'); const offerKmLabelEl=offerKmEl?offerKmEl.previousElementSibling:null; if(!offerKmEl) return; if(isElectricType){ offerKmEl.style.display=''; if(offerKmLabelEl) offerKmLabelEl.style.display=''; } else { offerKmEl.textContent=''; offerKmEl.style.display='none'; if(offerKmLabelEl) offerKmLabelEl.style.display='none'; return; } })();
 const offerKm = document.getElementById('offerKm'); if (offerKm && kmStandInput) {
   const kmVal = kmStandInput.value ? Number(kmStandInput.value) : 0;
   offerKm.textContent = kmVal.toLocaleString('nl-NL') + ' km';
@@ -339,3 +337,44 @@ window.addEventListener('DOMContentLoaded', async () => {
   bindLicenseUI();
   await initData();
 });
+
+
+// --- PDF Generator (Luxe, zonder logo) ---
+function downloadOffertePDF(){
+  const { jsPDF } = window.jspdf || {};
+  if(!jsPDF){ alert('PDF-module is nog niet geladen. Probeer nogmaals.'); return; }
+  const doc = new jsPDF({unit:'mm',format:'a4'});
+  const blue=[0,51,128];
+  doc.setFont('Helvetica','bold');doc.setFontSize(24);doc.setTextColor(...blue);
+  doc.text('Offerte – Inruilvoorstel',20,20);
+  doc.setDrawColor(...blue);doc.setLineWidth(1.5);doc.line(20,25,190,25);
+  doc.setFontSize(16);doc.text('Klant & Fietsgegevens',20,35);
+  doc.line(20,37,90,37);
+  const klant=(document.getElementById('offerName')?.value)||'';
+  const type=(document.getElementById('offerType')?.textContent)||'';
+  const merk=(document.getElementById('offerBrand')?.textContent)||'';
+  const staat=(document.getElementById('offerState')?.textContent)||'';
+  const leeftijd=(document.getElementById('offerAge')?.textContent)||'';
+  const kmEl=document.getElementById('offerKm');
+  const km=((kmEl && kmEl.style.display!=='none')? (kmEl.textContent||'') : '')||'';
+  const prijs=(document.getElementById('offerTotal')?.textContent)||'';
+  let y=48;doc.setFont('Helvetica','');doc.setFontSize(12);
+  const fields=[["Naam klant:",klant],["Type fiets:",type],["Merk:",merk],["Staat:",staat],["Leeftijd:",leeftijd]];
+  fields.forEach(f=>{doc.text(f[0],20,y);doc.text(f[1],60,y);y+=10;});
+  if(km){ doc.text('Km-stand:',20,y); doc.text(km,60,y); y+=10; }
+  doc.setFont('Helvetica','bold');doc.setFontSize(16);doc.setTextColor(...blue);
+  doc.text('Inruilprijs:',20,y); doc.text(prijs,60,y);
+  doc.setTextColor(0,0,0); y+=15;
+  doc.setFontSize(10);
+  doc.text('Deze inruilwaarde is gebaseerd op type fiets, leeftijd, staat, km-stand en overige factoren.',20,y);
+  y+=20; doc.setFontSize(12);
+  doc.text('Handtekening klant:',20,y); doc.line(70,y+1,150,y+1);
+  y+=20; doc.text('Handtekening dealer:',20,y); doc.line(70,y+1,150,y+1);
+  y+=20; doc.text('Datum:',20,y); doc.line(40,y+1,90,y+1);
+  doc.save('Offerte-FietsServiceID.pdf');
+}
+// Event listener na DOM load fallback
+(function(){
+  function bind(){ const b=document.getElementById('downloadPdfBtn'); if(b){ b.addEventListener('click', downloadOffertePDF); return true;} return false; }
+  if(!bind()){ document.addEventListener('DOMContentLoaded', bind); }
+})();
