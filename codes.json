@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 4,
+  "version": 5,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -30,7 +30,7 @@
       "code": "FSID-PROD-BF0O-PEX0",
       "active": true,
       "note": "PROD",
-      "expires": null,
+      "expires": "2026-02-03",
       "issued_to": null,
       "issued_at": null
     },
