@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 11,
+  "version": 12,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -28,7 +28,7 @@
     },
     {
       "code": "FSID-PROD-BF0O-PEX0",
-      "active": true,
+      "active": false,
       "note": "Martin van der Wel Tweewielers",
       "expires": null,
       "issued_to": null,
@@ -36,7 +36,7 @@
     },
     {
       "code": "FSID-PROD-6W2L-B6IP",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -44,7 +44,7 @@
     },
     {
       "code": "FSID-PROD-JXND-BZSJ",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -52,7 +52,7 @@
     },
     {
       "code": "FSID-PROD-BE89-P7KO",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -60,7 +60,7 @@
     },
     {
       "code": "FSID-PROD-6AND-DHCO",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
