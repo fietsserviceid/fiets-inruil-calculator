@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 14,
+  "version": 15,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -29,8 +29,8 @@
     {
       "code": "FSID-PROD-BF0O-PEX0",
       "active": false,
-      "note": "Martin van der Wel Tweewielers",
-      "expires": null,
+      "note": "Ben van den Berg",
+      "expires": "2027-02-03",
       "issued_to": null,
       "issued_at": null
     },
