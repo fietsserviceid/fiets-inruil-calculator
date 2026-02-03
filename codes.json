@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 12,
+  "version": 13,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -68,7 +68,7 @@
     },
     {
       "code": "FSID-PROD-GI2A-X9X7",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -76,7 +76,7 @@
     },
     {
       "code": "FSID-PROD-BQUH-11YU",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -84,7 +84,7 @@
     },
     {
       "code": "FSID-PROD-PC3Y-JQJW",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -92,7 +92,7 @@
     },
     {
       "code": "FSID-PROD-B33I-L1KZ",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -100,7 +100,7 @@
     },
     {
       "code": "FSID-PROD-MI8R-SM9T",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -108,7 +108,7 @@
     },
     {
       "code": "FSID-PROD-XD1O-SIRS",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -116,7 +116,7 @@
     },
     {
       "code": "FSID-PROD-AHCF-52RA",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -124,7 +124,7 @@
     },
     {
       "code": "FSID-PROD-4YHY-CPMX",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -132,7 +132,7 @@
     },
     {
       "code": "FSID-PROD-6Z2N-GGRH",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -140,7 +140,7 @@
     },
     {
       "code": "FSID-PROD-B1CF-ZR15",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -148,7 +148,7 @@
     },
     {
       "code": "FSID-PROD-NV0Q-2TJT",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -156,7 +156,7 @@
     },
     {
       "code": "FSID-PROD-QP6H-402P",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -164,7 +164,7 @@
     },
     {
       "code": "FSID-PROD-KTXT-NA6Q",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -172,7 +172,7 @@
     },
     {
       "code": "FSID-PROD-3QKA-IUHV",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -180,7 +180,7 @@
     },
     {
       "code": "FSID-PROD-HAAP-U2VI",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -188,7 +188,7 @@
     },
     {
       "code": "FSID-PROD-VLU1-PLG3",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -196,7 +196,7 @@
     },
     {
       "code": "FSID-PROD-9DCX-70IQ",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -204,7 +204,7 @@
     },
     {
       "code": "FSID-PROD-C59Q-3SG0",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -212,7 +212,7 @@
     },
     {
       "code": "FSID-PROD-ANYT-CW63",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -220,7 +220,7 @@
     },
     {
       "code": "FSID-PROD-0S74-4YFS",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -228,7 +228,7 @@
     },
     {
       "code": "FSID-PROD-JBYV-4A23",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -236,7 +236,7 @@
     },
     {
       "code": "FSID-PROD-VVQI-IWFE",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -244,7 +244,7 @@
     },
     {
       "code": "FSID-PROD-6QUU-VLRQ",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -252,7 +252,7 @@
     },
     {
       "code": "FSID-PROD-05BB-G6MR",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -260,7 +260,7 @@
     },
     {
       "code": "FSID-PROD-I1E6-H6HT",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -268,7 +268,7 @@
     },
     {
       "code": "FSID-PROD-DV61-ESPX",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -276,7 +276,7 @@
     },
     {
       "code": "FSID-PROD-UEW8-35MT",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -284,7 +284,7 @@
     },
     {
       "code": "FSID-PROD-HYYT-DHYO",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -292,7 +292,7 @@
     },
     {
       "code": "FSID-PROD-6SU8-F85G",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -300,7 +300,7 @@
     },
     {
       "code": "FSID-PROD-FKY0-J0SM",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -308,7 +308,7 @@
     },
     {
       "code": "FSID-PROD-MK4Y-O62P",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -316,7 +316,7 @@
     },
     {
       "code": "FSID-PROD-CGUL-FJ7W",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -324,7 +324,7 @@
     },
     {
       "code": "FSID-PROD-EM2J-2EDC",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -332,7 +332,7 @@
     },
     {
       "code": "FSID-PROD-22QE-NH59",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -340,7 +340,7 @@
     },
     {
       "code": "FSID-PROD-QHRB-IODJ",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -348,7 +348,7 @@
     },
     {
       "code": "FSID-PROD-EO6B-NV9E",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -356,7 +356,7 @@
     },
     {
       "code": "FSID-PROD-HCHV-6N0H",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -364,7 +364,7 @@
     },
     {
       "code": "FSID-PROD-EY3S-1SHA",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -372,7 +372,7 @@
     },
     {
       "code": "FSID-PROD-NCJZ-SNCS",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -380,7 +380,7 @@
     },
     {
       "code": "FSID-PROD-O202-JN3B",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -388,7 +388,7 @@
     },
     {
       "code": "FSID-PROD-3S2N-3JDB",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -396,7 +396,7 @@
     },
     {
       "code": "FSID-PROD-JDVN-8VY9",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -404,7 +404,7 @@
     },
     {
       "code": "FSID-PROD-QQO6-CXGP",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -412,7 +412,7 @@
     },
     {
       "code": "FSID-PROD-M209-5FB6",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -420,7 +420,7 @@
     },
     {
       "code": "FSID-PROD-33FM-LEOM",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -428,7 +428,7 @@
     },
     {
       "code": "FSID-PROD-2Q15-64D5",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -436,7 +436,7 @@
     },
     {
       "code": "FSID-PROD-EANZ-BZOC",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -444,7 +444,7 @@
     },
     {
       "code": "FSID-PROD-4R6A-W6DH",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -452,7 +452,7 @@
     },
     {
       "code": "FSID-PROD-FBJW-T449",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -460,7 +460,7 @@
     },
     {
       "code": "FSID-PROD-Z72V-H2EY",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -468,7 +468,7 @@
     },
     {
       "code": "FSID-PROD-QXVO-YDQT",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -476,7 +476,7 @@
     },
     {
       "code": "FSID-PROD-EE17-JY3K",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -484,7 +484,7 @@
     },
     {
       "code": "FSID-PROD-B54U-L6X4",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -492,7 +492,7 @@
     },
     {
       "code": "FSID-PROD-WZGP-NRO9",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -500,7 +500,7 @@
     },
     {
       "code": "FSID-PROD-IHK4-SCM6",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -508,7 +508,7 @@
     },
     {
       "code": "FSID-PROD-ISO1-WD08",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
@@ -516,7 +516,7 @@
     },
     {
       "code": "FSID-PROD-7AIA-LOTA",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": null,
       "issued_to": null,
