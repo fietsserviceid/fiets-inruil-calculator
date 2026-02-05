@@ -117,8 +117,8 @@
       "Pegasus": 0.9,
       "Advanced Ebike": 0.95,
       "Huyser": 0.85,
-      "Stella": 0.85,
-      "Amslod": 0.8,
+      "Stella": 0.65,
+      "Amslod": 0.6,
       "Vyber": 0.8,
       "Starly Bikes": 0.95,
       "Reany": 0.8,
@@ -127,6 +127,7 @@
       "Vogue": 0.75,
       "Overig": 0.75,
       "Brinkers": 0.75,
+      "Flyer": 0.85,
       "Kettler": 0.95
     },
     "Stadsfiets": {
