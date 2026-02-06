@@ -1,12 +1,12 @@
 {
   "price_eur_per_year": 99,
-  "version": 17,
+  "version": 18,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
       "active": false,
       "note": "Martin van der Wel Tweewielers",
-      "expires": null,
+      "expires": "2026-02-05",
       "issued_to": null,
       "issued_at": null
     },
@@ -36,8 +36,8 @@
     },
     {
       "code": "FSID-PROD-6W2L-B6IP",
-      "active": false,
-      "note": "PROD",
+      "active": true,
+      "note": "Martin van der Wel Tweewielers",
       "expires": null,
       "issued_to": null,
       "issued_at": null
