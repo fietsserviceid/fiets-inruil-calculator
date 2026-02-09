@@ -270,5 +270,17 @@
       "max_km": null,
       "factor": 0.65
     }
-  ]
+  ],
+  "remtype": {
+    "applicable_types": [
+      "Racefiets",
+      "ATB",
+      "Gravelfiets"
+    ],
+    "factors": {
+      "hydraulisch": 1.0,
+      "mechanisch": 0.85,
+      "velg": 0.8
+    }
+  }
 }
