@@ -1,4 +1,4 @@
-// Fiets Inruil Calculator – app.js (dealernaam uit licentie + geldigheidsregel onder datum)
+// Fiets Inruil Calculator – app.js (dealernaam uit licentie + datum/teksten sync)
 const LIC_STORAGE_KEY = 'fsid_license_v1';
 const CODES_SOURCE = './codes.json';
 const DATA_SOURCE = '/data.json';
@@ -10,7 +10,6 @@ async function fetchJSON(url) {
   return await resp.json();
 }
 
-// v9.6 - helper: toon/verberg Km-stand in offerte op basis van type
 function setOfferKmVisibility(isElectricType, km) {
   try {
     const offerKmEl = document.getElementById('offerKm');
@@ -34,7 +33,7 @@ function setOfferKmVisibility(isElectricType, km) {
 function getKmStandFactor(km, factors) {
   if (typeof km !== 'number' || isNaN(km) || km < 0) return 1.0;
   for (const band of (factors ?? [])) {
-    if (band.max_km === null) return band.factor; // bovenste catch-all
+    if (band.max_km === null) return band.factor;
     if (km <= band.max_km) return band.factor;
   }
   return 1.0;
@@ -63,7 +62,6 @@ function getLocalLicense() {
 
 function pickDealerName(entry) {
   if (!entry || typeof entry !== 'object') return '';
-  // Prioriteit: 'note' (zoals in codes.json), met fallbacks
   return (
     entry.note ??
     entry.dealer_name ??
@@ -85,7 +83,6 @@ function persistDealerName(name) {
   } catch {}
 }
 
-// ====== server-gestuurde validatie en her-validatie ======
 function isServerLicenseValid(serverEntry) {
   if (!serverEntry) return false;
   if (serverEntry.active === false) return false;
@@ -104,7 +101,6 @@ async function revalidateLocalLicenseAgainstServer() {
     const entry = (list.codes ?? []).find((c) => c.code === lic.code);
     if (!isServerLicenseValid(entry)) { localStorage.removeItem(LIC_STORAGE_KEY); return false; }
 
-    // 'valid_until' kan lokale expiry inkorten
     if (entry?.valid_until) {
       const serverExp = new Date(entry.valid_until);
       if (!Number.isNaN(+serverExp)) {
@@ -114,7 +110,6 @@ async function revalidateLocalLicenseAgainstServer() {
       }
     }
 
-    // NIEUW: dealernaam synchroniseren naar lokale licentie
     const dealerName = pickDealerName(entry);
     if (dealerName) persistDealerName(dealerName);
 
@@ -122,7 +117,6 @@ async function revalidateLocalLicenseAgainstServer() {
   } catch { return true; }
 }
 
-// ================== activatie ==================
 async function activateLicenseFromInput() {
   const input = document.getElementById('licCodeInput');
   const msg = document.getElementById('licMsg');
@@ -136,7 +130,6 @@ async function activateLicenseFromInput() {
 
     saveLocalLicense(code, 12);
 
-    // Begrens lokaal op server-einddatum (indien opgegeven)
     if (found?.valid_until) {
       const serverExp = new Date(found.valid_until);
       if (!Number.isNaN(+serverExp)) {
@@ -146,15 +139,12 @@ async function activateLicenseFromInput() {
       }
     }
 
-    // NIEUW: dealernaam opslaan uit de server entry
     const dealerName = pickDealerName(found);
     if (dealerName) persistDealerName(dealerName);
 
     const newLic = JSON.parse(localStorage.getItem(LIC_STORAGE_KEY));
     msg.textContent = 'Licentie geactiveerd tot ' + new Date(newLic.expiresAt).toLocaleDateString('nl-NL');
     closeLicenseGate();
-
-    // Zorg dat de offerte direct geüpdatet is na activatie
     try { recalc(); } catch {}
   } catch (e) {
     msg.textContent = (e && e.message) || 'Activatie mislukt';
@@ -182,7 +172,6 @@ function closeLicenseGate() {
   if (footer) footer.textContent = '';
 }
 
-// -------------------------------------------------
 let DATA = null;
 function populateSelect(sel, items) {
   sel.innerHTML = '';
@@ -307,7 +296,7 @@ async function initData() {
     const dEl = document.getElementById('offerDate');
     if (dEl) dEl.textContent = new Date().toLocaleDateString('nl-NL');
     const validityEl = document.getElementById('offerValidity');
-    if (validityEl) { validityEl.textContent = 'Deze offerte is 14 dagen geldig vanaf printdatum.'; }
+    if (validityEl) { validityEl.textContent = 'Deze offerte is 14 dagen geldig vanaf bovenstaande datum.'; }
     setTimeout(() => window.print(), 50);
   });
 }
@@ -321,7 +310,6 @@ function bindLicenseUI() {
   input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); activateLicenseFromInput(); } });
 }
 
-// PWA install-knop beheer
 (function installButtonManager() {
   const installBtn = document.getElementById('installBtn');
   const banner = document.getElementById('licenseBanner');
@@ -349,7 +337,6 @@ function bindLicenseUI() {
   setTimeout(updateInstallVisibility, 500); setTimeout(updateInstallVisibility, 1500); updateInstallVisibility();
 })();
 
-// Opstart
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     const list = await fetchLicenseList();
@@ -367,7 +354,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (gateEl) gateEl.hidden = false; if (banner) { banner.textContent = 'Licentie vereist voor gebruik.'; banner.style.display = 'block'; } if (footer) footer.textContent = '';
   } else {
     const ok = await revalidateLocalLicenseAgainstServer();
-    if (ok) { closeLicenseGate(); } else { if (gateEl) gateEl.hidden = false; if (banner) { banner.textContent = 'Licentie ongeldig of verlopen.'; banner.style.display = 'block'; } if (footer) footer.textContent = ''; }
+    if (ok) { closeLicenseGate(); } else { if (gateEl) gateEl.hidden = false; if (banner) { banner.textContent = 'Licentie ongeldig of verlopen.'; banner.style.display = 'block'; } if (footer) footer.textContent = '';
+    }
   }
   bindLicenseUI();
   await initData();
@@ -393,7 +381,14 @@ function downloadOffertePDF() {
   const km   = (kmEl && kmEl.style.display !== 'none') ? (kmEl.textContent ?? '') : '';
   const prijs = (document.getElementById('offerTotal')?.textContent) ?? '';
   const dealer = (document.getElementById('offerDealer')?.textContent) ?? '';
-  const dateTxt = (document.getElementById('offerDate')?.textContent) ?? new Date().toLocaleDateString('nl-NL');
+
+  // Datum ophalen: gebruik pagina-datum als die er is, anders huidige datum
+  let dateTxt = '';
+  try {
+    const dEl = document.getElementById('offerDate');
+    const pageDate = (dEl && typeof dEl.textContent === 'string') ? dEl.textContent.trim() : '';
+    dateTxt = pageDate || new Date().toLocaleDateString('nl-NL');
+  } catch { dateTxt = new Date().toLocaleDateString('nl-NL'); }
 
   let y = 48; doc.setFont('Helvetica', ''); doc.setFontSize(12);
   const fields = [ ['Naam klant:', klant], ['Type fiets:', type], ['Merk:', merk], ['Staat:', staat], ['Leeftijd:', leeftijd] ];
@@ -401,17 +396,19 @@ function downloadOffertePDF() {
   if (km) { doc.text('Km-stand:', 20, y); doc.text(km, 60, y); y += 10; }
   doc.setFont('Helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(...blue); doc.text('Inruilprijs:', 20, y); doc.text(prijs, 60, y); doc.setTextColor(0,0,0); y += 15;
 
-  // Toelichting + datum, geldigheid, dealer onder elkaar
+  // Toelichting + datum, geldigheid, dealer onder elkaar (teksten gesynchroniseerd met app)
   doc.setFont('Helvetica', ''); doc.setFontSize(10);
-  doc.text('Deze inruilwaarde is gebaseerd op type fiets, leeftijd, staat, km-stand en overige factoren.', 20, y); y += 8;
+  doc.text('Deze inruilwaarde is tot stand gekomen op basis van type fiets, leeftijd, algemene staat en (indien van toepassing) km-stand. Dit voorstel is indicatief en onder voorbehoud van fysieke inspectie.', 20, y, { maxWidth: 170 });
+  y += 8;
   doc.text('Datum: ' + dateTxt, 20, y); y += 6;
-  doc.text('Deze offerte is 14 dagen geldig vanaf printdatum.', 20, y); y += 6;
+  doc.text('Deze offerte is 14 dagen geldig vanaf bovenstaande datum.', 20, y); y += 6;
   if (dealer) { doc.text('Dealer: ' + dealer, 20, y); y += 10; } else { y += 10; }
 
   doc.setFontSize(12);
   doc.text('Handtekening klant:', 20, y); doc.setLineWidth(0.2); doc.line(70, y + 1, 150, y + 1); y += 20;
   doc.text('Handtekening dealer:', 20, y); doc.setLineWidth(0.2); doc.line(70, y + 1, 150, y + 1); y += 20;
-  doc.text('Datum:', 20, y); doc.text(new Date().toLocaleDateString('nl-NL'), 40, y);
+  // Onderaan GEEN extra datum meer (dubbeling verwijderd)
+
   doc.save('Offerte-FietsServiceID.pdf');
 }
 (function(){ function bind(){ const b = document.getElementById('downloadPdfBtn'); if (b && !b.dataset.pdfBound){ b.addEventListener('click', downloadOffertePDF); b.dataset.pdfBound='1'; return true; } return false; } if(!bind()){ document.addEventListener('DOMContentLoaded', bind, { once: true }); } })();
