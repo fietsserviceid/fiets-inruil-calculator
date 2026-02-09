@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 21,
+  "version": 22,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -44,7 +44,7 @@
     },
     {
       "code": "FSID-PROD-JXND-BZSJ",
-      "active": true,
+      "active": false,
       "note": "Bijl Tweewielers",
       "expires": null,
       "issued_to": null,
@@ -52,9 +52,9 @@
     },
     {
       "code": "FSID-PROD-BE89-P7KO",
-      "active": false,
+      "active": true,
       "note": "PROD",
-      "expires": null,
+      "expires": "2027-02-09",
       "issued_to": null,
       "issued_at": null
     },
