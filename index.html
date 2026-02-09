@@ -187,5 +187,65 @@
     });
   </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- === START: Mailto-body fix (plakken vóór </body>) === -->
+<script>
+(function () {
+  // Pak de bestaande mailto-link op het info@fietsserviceid.nl adres
+  const btn = document.querySelector('a.btn[href^="mailto:info@fietsserviceid.nl"]');
+  if (!btn) return;
+
+  // Helper om een veldwaarde veilig op te halen
+  function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+  btn.addEventListener('click', async function (e) {
+    // We bouwen zelf de mailto-URL met nette body i.p.v. de kale href
+    e.preventDefault();
+
+    const bedrijf = val('licBedrijfsnaam');
+    const contact = val('licContact');
+    const email   = val('licEmail');
+    const tel     = val('licTel');
+    const adres   = val('licAdres');
+    const pc      = val('licPostcode');
+    const plaats  = val('licPlaats');
+    const kvk     = val('licKvK');
+    const btw     = val('licBTW');
+
+    const lines = [
+      'Aanvraag Installatiecode – Fiets Service ID',
+      '',
+      `Bedrijfsnaam:    ${bedrijf || '—'}`,
+      `Contactpersoon:  ${contact || '—'}`,
+      `E‑mail:          ${email || '—'}`,
+      `Telefoon:        ${tel || '—'}`,
+      `Adres:           ${adres || '—'}`,
+      `Postcode:        ${pc || '—'}`,
+      `Plaats:          ${plaats || '—'}`,
+      `KvK-nummer:      ${kvk || '—'}`,
+      `BTW-nummer:      ${btw || '—'}`,
+      '',
+      'Ik wil een 1‑jarige licentie (max 10 apparaten) voor de Fiets Inruil Calculator.',
+      '',
+      `Verzonden op:    ${new Date().toLocaleString('nl-NL')}`
+    ];
+
+    // CRLF voor brede compatibiliteit met mailclients
+    const body = lines.join('\r\n');
+    const subject = 'Aanvraag installatiecode — Fiets Service ID';
+
+    // Handige fallback: kopieer ook naar klembord (als iOS/Gmail ooit body stript)
+    try { await navigator.clipboard.writeText(body); } catch {}
+
+    const mailto =
+      'mailto:info@fietsserviceid.nl' +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body='    + encodeURIComponent(body);
+
+    // Open de e‑mailclient met onderwerp + body
+    window.location.href = mailto;
+  });
+})();
+</script>
+<!-- === EINDE: Mailto-body fix === -->
 </body>
 </html>
