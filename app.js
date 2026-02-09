@@ -1,4 +1,3 @@
-
 // Fiets Inruil Calculator – app.js (km-stand + lokale bronnen, activatie ongewijzigd) 
 const LIC_STORAGE_KEY = 'fsid_license_v1'; 
 const CODES_SOURCE = './codes.json'; 
@@ -108,6 +107,17 @@ async function revalidateLocalLicenseAgainstServer() {
  } 
  } 
  } 
+ // --- NIEUW: dealernaam uit server-entry opslaan in lokale licentie ---
+ try {
+   const dealerNameFromServer =
+     (entry && (entry.dealer_name ?? entry.dealer ?? entry.company ?? entry.org)) || '';
+   const local = JSON.parse(localStorage.getItem(LIC_STORAGE_KEY)) || {};
+   if (dealerNameFromServer) {
+     local.dealerName = dealerNameFromServer;
+     localStorage.setItem(LIC_STORAGE_KEY, JSON.stringify(local));
+   }
+ } catch {}
+ // -------------------------------------------------------------------
  return true; 
  } catch { 
  // Netwerkfout -> laat lokale licentie door (optioneel strenger maken) 
@@ -138,6 +148,17 @@ async function activateLicenseFromInput() {
  } 
  } 
  } 
+ // --- NIEUW: dealernaam uit server-entry opslaan in lokale licentie ---
+ try {
+   const dealerNameFromServer =
+     (found && (found.dealer_name ?? found.dealer ?? found.company ?? found.org)) || '';
+   const local = JSON.parse(localStorage.getItem(LIC_STORAGE_KEY)) || {};
+   if (dealerNameFromServer) {
+     local.dealerName = dealerNameFromServer;
+     localStorage.setItem(LIC_STORAGE_KEY, JSON.stringify(local));
+   }
+ } catch {}
+ // -------------------------------------------------------------------
  const newLic = JSON.parse(localStorage.getItem(LIC_STORAGE_KEY)); 
  msg.textContent = 
  'Licentie geactiveerd tot ' + 
@@ -213,7 +234,7 @@ function recalc() {
  const restTab = hasAccu ? DATA.restwaarde.metaccu : DATA.restwaarde.zonderaccu; 
  const ageFactor = Number(restTab[String(age)] ?? 0); 
  const stateFactor = Number(DATA.cond_factors[stateSel.value] ?? 1); 
- const brandFactor = Number((DATA.brands[typeName] ?? {}).get?.(brandSel.value) ?? (DATA.brands[typeName] ?? {})[brandSel.value] ?? 1); 
+ const brandFactor = Number((DATA.brands[typeName] ?? {})[brandSel.value] ?? 1); 
  const accuFactor = hasAccu ? Number(DATA.accu_state_factors[accuStateSel.value] ?? 1) : 1; 
  // Km-stand factor: alleen bij elektrische types (has_accu_default true) 
  const isElectricType = !!(typeObj?.has_accu_default); 
@@ -248,19 +269,14 @@ function recalc() {
  const kmVal = kmStandInput.value ? Number(kmStandInput.value) : 0; 
  offerKm.textContent = kmVal.toLocaleString('nl-NL') + ' km'; 
  } 
- // --- NIEUW: Dealernaam naar de offerte (Optie B) ---
+ // --- NIEUW: Dealernaam uit lokale licentie (Optie B, automatisch) ---
  try {
    const offerDealer = document.getElementById('offerDealer');
-   const dealerSource =
-     document.getElementById('dealerName') ||
-     document.querySelector('[data-dealer-name]');
    let dealerName = '';
-   if (dealerSource) {
-     dealerName =
-       (dealerSource.value ?? '').trim() ||
-       (dealerSource.getAttribute?.('data-dealer-name') ?? '').trim() ||
-       (dealerSource.textContent ?? '').trim();
-   }
+   try {
+     const lic = JSON.parse(localStorage.getItem(LIC_STORAGE_KEY)) || {};
+     dealerName = lic.dealerName ?? '';
+   } catch {}
    if (offerDealer) offerDealer.textContent = dealerName;
  } catch (e) { /* noop */ }
 } 
