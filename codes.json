@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 22,
+  "version": 23,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -44,15 +44,15 @@
     },
     {
       "code": "FSID-PROD-JXND-BZSJ",
-      "active": false,
-      "note": "Bijl Tweewielers",
-      "expires": null,
+      "active": true,
+      "note": "Bas tweewielers Zoetermeer",
+      "expires": "2027-02-09",
       "issued_to": null,
       "issued_at": null
     },
     {
       "code": "FSID-PROD-BE89-P7KO",
-      "active": true,
+      "active": false,
       "note": "PROD",
       "expires": "2027-02-09",
       "issued_to": null,
