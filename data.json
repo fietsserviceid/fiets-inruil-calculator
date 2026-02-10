@@ -128,7 +128,8 @@
       "Overig": 0.75,
       "Brinkers": 0.75,
       "Flyer": 0.85,
-      "Kettler": 0.95
+      "Kettler": 0.95,
+      "Merida": 0.90
     },
     "Stadsfiets": {
       "Gazelle": 1.0,
@@ -153,7 +154,7 @@
       "Cannondale": 0.95,
       "Cube": 0.95,
       "Scott": 0.95,
-      "Merida": 0.95,
+      "Merida": 0.90,
       "Stevens": 0.95,
       "Wilier": 0.95,
       "Orbea": 0.95,
@@ -175,6 +176,7 @@
       "Scott": 0.95,
       "Cube": 0.9,
       "Sensa": 0.85,
+      "Merida": 0.90,
       "Overig": 0.8
     },
     "Kinderfiets": {
