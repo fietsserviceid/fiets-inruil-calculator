@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 24,
+  "version": 25,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -60,9 +60,9 @@
     },
     {
       "code": "FSID-PROD-6AND-DHCO",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Van Beekhuizen Tweewielers",
+      "expires": "2027-02-11",
       "issued_to": null,
       "issued_at": null
     },
