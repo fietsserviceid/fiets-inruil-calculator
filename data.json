@@ -276,13 +276,16 @@
   "Zannata": 0.85
     },
     "Kinderfiets": {
-      "Puky": 1.0,
-      "Loekie": 0.95,
-      "Alpina": 0.9,
-      "Volare": 0.85,
-      "Aldo": 0.8,
-      "Popal": 0.8,
-      "Overig": 0.75
+  "Aldo": 0.8,
+  "Alpina": 0.9,
+  "Altec": 0.8,
+  "B'Twin (Decathlon)": 0.8,
+  "Loekie": 0.95,
+  "Overig": 0.75,
+  "Popal": 0.8,
+  "Puky": 1.0,
+  "Volare": 0.85,
+  "Yipeeh": 0.75
     },
     "Gravelfiets": {
   "3T": 0.95,
