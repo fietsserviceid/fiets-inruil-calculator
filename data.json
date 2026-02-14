@@ -360,15 +360,20 @@
   "Overig": 0.8
     },
     "Speedpedelec": {
-      "Stromer": 1.0,
-      "Riese & Müller": 1.0,
-      "Trek": 1.0,
-      "Gazelle": 0.95,
-      "Klever": 0.95,
-      "Giant": 0.95,
-      "QWIC": 0.9,
-      "Sparta": 0.9,
-      "Overig": 0.85
+  "Bulls": 0.9,
+  "Flyer": 0.9,
+  "Giant": 0.95,
+  "Gazelle": 0.95,
+  "Kalkhoff": 0.9,
+  "Klever": 0.95,
+  "Moustache": 0.9,
+  "Overig": 0.85,
+  "QWIC": 0.9,
+  "Riese & Müller": 1.0,
+  "Sparta": 0.9,
+  "Specialized": 1.0,
+  "Stromer": 1.0,
+  "Trek": 1.0
     }
   },
   "km_stand_factors": [
