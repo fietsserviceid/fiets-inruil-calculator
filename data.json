@@ -316,15 +316,20 @@
   "Yeti": 0.95
     },
     "Bakfiets": {
-      "Urban Arrow": 1.0,
-      "Lovens": 1.0,
-      "Gazelle": 0.95,
-      "Bakfiets.nl": 0.95,
-      "Carqon": 0.95,
-      "Cago": 0.95,
-      "Babboe": 0.85,
-      "Cangoo": 0.8,
-      "Overig": 0.8
+  "Babboe": 0.85,
+  "Bakfiets.nl": 0.95,
+  "Bimas": 0.85,
+  "Cago": 0.95,
+  "Cangoo": 0.8,
+  "Carqon": 0.95,
+  "Gazelle": 0.95,
+  "Lovens": 1.0,
+  "Qivelo": 0.8,
+  "SociBike": 0.85,
+  "Tarran": 0.9,
+  "Urban Arrow": 1.0,
+  "Vogue": 0.8,
+  "Overig": 0.8
     },
     "Speedpedelec": {
       "Stromer": 1.0,
