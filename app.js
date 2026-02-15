@@ -443,3 +443,49 @@ function downloadOffertePDF() {
   doc.save('Offerte-FietsServiceID.pdf');
 }
 (function(){ function bind(){ const b = document.getElementById('downloadPdfBtn'); if (b && !b.dataset.pdfBound){ b.addEventListener('click', downloadOffertePDF); b.dataset.pdfBound='1'; return true; } return false; } if(!bind()){ document.addEventListener('DOMContentLoaded', bind, { once: true }); } })();
+// ----------------- Installatiecode aanvraag mailto (dynamisch) -----------------
+(function bindLicenseMailto() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('a[href^="mailto:info@fietsserviceid.nl"]');
+    if (!btn) return;
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const bedrijfsnaam = document.getElementById('licBedrijfsnaam')?.value || '';
+      const contact = document.getElementById('licContact')?.value || '';
+      const email = document.getElementById('licEmail')?.value || '';
+      const tel = document.getElementById('licTel')?.value || '';
+      const adres = document.getElementById('licAdres')?.value || '';
+      const postcode = document.getElementById('licPostcode')?.value || '';
+      const plaats = document.getElementById('licPlaats')?.value || '';
+      const kvk = document.getElementById('licKvK')?.value || '';
+      const btw = document.getElementById('licBTW')?.value || '';
+
+      const subject = "Aanvraag installatiecode — Fiets Service ID";
+
+      const body =
+`Beste Fiets Service ID,
+
+Wij willen graag een installatiecode aanvragen voor de Fiets Inruil Calculator.
+
+Bedrijfsnaam: ${bedrijfsnaam}
+Contactpersoon: ${contact}
+E-mail: ${email}
+Telefoon: ${tel}
+Adres: ${adres}
+Postcode: ${postcode}
+Plaats: ${plaats}
+KvK: ${kvk}
+BTW: ${btw}
+
+Met vriendelijke groet,
+${contact}
+`;
+
+      const mailto = `mailto:info@fietsserviceid.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      window.location.href = mailto;
+    });
+  });
+})();
