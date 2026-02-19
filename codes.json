@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 29,
+  "version": 30,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -46,7 +46,7 @@
       "code": "FSID-PROD-JXND-BZSJ",
       "active": true,
       "note": "Bas tweewielers Zoetermeer",
-      "expires": "2027-02-09",
+      "expires": "2027-02-16",
       "issued_to": null,
       "issued_at": null
     },
@@ -54,7 +54,7 @@
       "code": "FSID-PROD-BE89-P7KO",
       "active": true,
       "note": "Noorlander Tweewielers",
-      "expires": "2027-02-09",
+      "expires": "2027-02-16",
       "issued_to": null,
       "issued_at": null
     },
@@ -62,7 +62,7 @@
       "code": "FSID-PROD-6AND-DHCO",
       "active": true,
       "note": "Van Beekhuizen Tweewielers",
-      "expires": "2027-02-11",
+      "expires": "2027-02-18",
       "issued_to": null,
       "issued_at": null
     },
@@ -70,7 +70,7 @@
       "code": "FSID-PROD-GI2A-X9X7",
       "active": true,
       "note": "Eddy's fietsen",
-      "expires": "2027-02-12",
+      "expires": "2027-02-19",
       "issued_to": null,
       "issued_at": null
     },
