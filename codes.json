@@ -1,10 +1,10 @@
 {
   "price_eur_per_year": 99,
-  "version": 32,
+  "version": 33,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
-      "active": true,
+      "active": false,
       "note": "Demo",
       "expires": "2026-02-21",
       "issued_to": null,
