@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 33,
+  "version": 34,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -92,9 +92,9 @@
     },
     {
       "code": "FSID-PROD-B33I-L1KZ",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Tria Fietsen",
+      "expires": "2026-03-04",
       "issued_to": null,
       "issued_at": null
     },
