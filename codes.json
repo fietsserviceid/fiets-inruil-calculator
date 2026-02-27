@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 34,
+  "version": 35,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -100,9 +100,9 @@
     },
     {
       "code": "FSID-PROD-MI8R-SM9T",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Fietsen aan de Mark",
+      "expires": "2026-03-06",
       "issued_to": null,
       "issued_at": null
     },
