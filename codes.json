@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 38,
+  "version": 39,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -124,9 +124,9 @@
     },
     {
       "code": "FSID-PROD-4YHY-CPMX",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Voordeelfiets",
+      "expires": "2027-03-26",
       "issued_to": null,
       "issued_at": null
     },
