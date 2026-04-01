@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 46,
+  "version": 47,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -164,9 +164,9 @@
     },
     {
       "code": "FSID-PROD-KTXT-NA6Q",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Bets Fietsen Demo",
+      "expires": "2026-04-09",
       "issued_to": null,
       "issued_at": null
     },
