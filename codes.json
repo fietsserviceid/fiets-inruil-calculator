@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 49,
+  "version": 50,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -157,7 +157,7 @@
     {
       "code": "FSID-PROD-QP6H-402P",
       "active": true,
-      "note": "Cees Boer Fietsen Demo",
+      "note": "Cees Boer Fietsen",
       "expires": "2027-04-13",
       "issued_to": null,
       "issued_at": null
