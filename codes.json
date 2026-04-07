@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 50,
+  "version": 51,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -172,9 +172,9 @@
     },
     {
       "code": "FSID-PROD-3QKA-IUHV",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "De Wolf Fietsen",
+      "expires": "2027-04-14",
       "issued_to": null,
       "issued_at": null
     },
