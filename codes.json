@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 60,
+  "version": 61,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -212,9 +212,9 @@
     },
     {
       "code": "FSID-PROD-ANYT-CW63",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Hans Janssen Tweewielers",
+      "expires": "2027-04-19",
       "issued_to": null,
       "issued_at": null
     },
