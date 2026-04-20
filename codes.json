@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 61,
+  "version": 62,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -220,9 +220,9 @@
     },
     {
       "code": "FSID-PROD-0S74-4YFS",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Edwin Fietsverhuur",
+      "expires": "2026-04-27",
       "issued_to": null,
       "issued_at": null
     },
