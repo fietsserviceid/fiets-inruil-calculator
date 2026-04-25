@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 62,
+  "version": 63,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -197,8 +197,8 @@
     {
       "code": "FSID-PROD-9DCX-70IQ",
       "active": true,
-      "note": "Herckenrath Fietsplaza DEMO",
-      "expires": "2026-04-24",
+      "note": "Herckenrath Fietsplaza",
+      "expires": "2027-04-24",
       "issued_to": null,
       "issued_at": null
     },
