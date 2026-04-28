@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 64,
+  "version": 65,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -228,9 +228,9 @@
     },
     {
       "code": "FSID-PROD-JBYV-4A23",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "John Vermeulen Fietsen",
+      "expires": "2027-05-05",
       "issued_to": null,
       "issued_at": null
     },
