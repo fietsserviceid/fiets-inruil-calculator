@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 65,
+  "version": 66,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -236,9 +236,9 @@
     },
     {
       "code": "FSID-PROD-VVQI-IWFE",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Jan Reijnen BV",
+      "expires": "2027-06-11",
       "issued_to": null,
       "issued_at": null
     },
