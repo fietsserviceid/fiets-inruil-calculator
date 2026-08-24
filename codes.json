@@ -1,6 +1,6 @@
 {
   "price_eur_per_year": 99,
-  "version": 66,
+  "version": 67,
   "codes": [
     {
       "code": "FSID-DEMO-1234-5678",
@@ -244,9 +244,9 @@
     },
     {
       "code": "FSID-PROD-6QUU-VLRQ",
-      "active": false,
-      "note": "PROD",
-      "expires": null,
+      "active": true,
+      "note": "Ebike XL",
+      "expires": "2027-08-24",
       "issued_to": null,
       "issued_at": null
     },
